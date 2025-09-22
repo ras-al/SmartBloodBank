@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-
 import java.io.IOException;
 
 public class DashboardController {
@@ -16,45 +15,98 @@ public class DashboardController {
     @FXML
     private BorderPane mainPane;
     @FXML
+    private Label welcomeLabel;
+
+    // Buttons for different roles
+    @FXML
     private Button donorDashboardButton;
     @FXML
-    private Label welcomeLabel; // New FXML element for the top navbar
+    private Button postRequestButton;
+    @FXML
+    private Button viewStatusButton;
+
     private User currentUser;
 
     public void initData(User user) {
         this.currentUser = user;
-
-        // Set the text in the new top navbar
         welcomeLabel.setText("Welcome, " + user.getUsername() + "!");
 
-        // Show/hide the sidebar button based on role
-        donorDashboardButton.setVisible("Donor".equals(user.getRole()));
+        // Configure sidebar visibility based on user role
+        configureSidebar(user.getRole());
 
-        // Load the homepage by default
+        // Load the default homepage view
         handleHomeButton();
     }
 
+    private void configureSidebar(String role) {
+        boolean isDonor = "Donor".equals(role);
+        boolean isHospital = "HospitalStaff".equals(role);
+
+        donorDashboardButton.setVisible(isDonor);
+        donorDashboardButton.setManaged(isDonor);
+
+        postRequestButton.setVisible(isHospital);
+        postRequestButton.setManaged(isHospital);
+
+        viewStatusButton.setVisible(isHospital);
+        viewStatusButton.setManaged(isHospital);
+    }
+
+
     @FXML
     protected void handleHomeButton() {
-        loadView("/com/example/smartbloodbank/HomePageView.fxml");
+        if (currentUser != null && "HospitalStaff".equals(currentUser.getRole())) {
+            loadView("/com/example/smartbloodbank/HospitalHomePageView.fxml");
+        } else {
+            // Default to the donor/general homepage
+            loadView("/com/example/smartbloodbank/HomePageView.fxml");
+        }
     }
+
+
+    @FXML
+    protected void handleProfileButton() {
+        loadView("/com/example/smartbloodbank/ProfileView.fxml");
+    }
+
 
     @FXML
     protected void handleDonorDashboardButton() {
         loadView("/com/example/smartbloodbank/DonorDashboardView.fxml");
     }
 
+
+    @FXML
+    protected void handlePostRequestButton() {
+        loadView("/com/example/smartbloodbank/PostRequestView.fxml");
+    }
+
+
+    @FXML
+    protected void handleViewStatusButton() {
+        loadView("/com/example/smartbloodbank/RequestStatusView.fxml");
+    }
+
+
     private void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent subView = loader.load();
 
+            // Pass data to the correct sub-controllers
             if (fxmlFile.contains("DonorDashboardView")) {
                 DonorDashboardController controller = loader.getController();
                 controller.initData(currentUser);
-            } else if (fxmlFile.contains("HomePageView")) {
+            } else if (fxmlFile.contains("HospitalHomePageView")) { // CHECK FOR HOSPITAL FIRST
+                HospitalHomePageController controller = loader.getController();
+                controller.setDashboardController(this);
+                controller.initData(currentUser);
+            } else if (fxmlFile.contains("HomePageView")) { // THEN CHECK FOR DONOR/GENERAL
                 HomePageController controller = loader.getController();
                 controller.setDashboardController(this);
+                controller.initData(currentUser);
+            } else if (fxmlFile.contains("ProfileView")) {
+                ProfileController controller = loader.getController();
                 controller.initData(currentUser);
             }
 
@@ -63,6 +115,7 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     protected void handleLogout() {

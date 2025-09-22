@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" spacing="25.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.ProfileController">
+    <padding>
+        <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+    </padding>
+    <children>
+        <Text styleClass="dashboard-header" text="My Profile" />
+        <VBox maxWidth="450.0" spacing="20.0" styleClass="form-container">
+            <children>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Username" />
+                    <TextField fx:id="usernameField" />
+                </VBox>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Email Address" />
+                    <TextField fx:id="emailField" />
+                </VBox>
+
+                <VBox fx:id="roleSpecificFields" spacing="20.0" managed="false" visible="false">
+                    <children>
+                        <VBox fx:id="donorFields" spacing="8.0" managed="false" visible="false">
+                            <Label styleClass="form-label" text="Blood Type" />
+                            <TextField fx:id="bloodTypeField" />
+                        </VBox>
+                        <VBox fx:id="hospitalFields" spacing="8.0" managed="false" visible="false">
+                            <Label styleClass="form-label" text="Hospital Name" />
+                            <TextField fx:id="hospitalNameField" />
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <Button onAction="#handleSaveChanges" prefWidth="400.0" styleClass="primary-button" text="Save Changes" />
+            </children>
+        </VBox>
+    </children>
+</VBox>
