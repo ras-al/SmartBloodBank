@@ -93,7 +93,6 @@ public class DashboardController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent subView = loader.load();
 
-            // Pass data to the correct sub-controllers
             if (fxmlFile.contains("DonorDashboardView")) {
                 DonorDashboardController controller = loader.getController();
                 controller.initData(currentUser);
