@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.LandingPageController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
+            <children>
+                <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/logo.png" />
+                    </image>
+                </ImageView>
+                <HBox HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleLoginButton" styleClass="primary-button" text="Login / Register" />
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="80.0">
+                    <padding>
+                        <Insets bottom="100.0" top="50.0" />
+                    </padding>
+                    <VBox alignment="CENTER" spacing="25.0" styleClass="hero-section">
+                        <Text text="Give the Gift of Life." textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="68.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#555555" text="Join our smart network connecting voluntary blood donors with those in urgent need.&#10;Your single donation can save up to three lives." textAlignment="CENTER" wrappingWidth="600.0">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Text>
+                        <Button onAction="#handleLoginButton" styleClass="primary-button" text="Become a Donor Today" />
+                    </VBox>
+
+                    <VBox alignment="TOP_CENTER" spacing="30.0">
+                        <Text text="Why Choose DonorLink?">
+                            <font>
+                                <Font name="System Bold" size="36.0" />
+                            </font>
+                        </Text>
+                        <HBox alignment="CENTER" spacing="30.0">
+                            <padding>
+                                <Insets top="20.0" />
+                            </padding>
+                            <VBox alignment="CENTER_LEFT" spacing="10.0" styleClass="feature-card">
+                                <Text text="AI-Powered Matching">
+                                    <font><Font name="System Bold" size="18.0" /></font>
+                                </Text>
+                                <Text fill="#555555" text="Our system instantly finds the most eligible and nearby donors for urgent requests." wrappingWidth="280.0" />
+                            </VBox>
+                            <VBox alignment="CENTER_LEFT" spacing="10.0" styleClass="feature-card">
+                                <Text text="Real-Time Analytics">
+                                    <font><Font name="System Bold" size="18.0" /></font>
+                                </Text>
+                                <Text fill="#555555" text="Hospitals can view live inventory data, predicting shortages before they happen." wrappingWidth="280.0" />
+                            </VBox>
+                            <VBox alignment="CENTER_LEFT" spacing="10.0" styleClass="feature-card">
+                                <Text text="Track Your Impact">
+                                    <font><Font name="System Bold" size="18.0" /></font>
+                                </Text>
+                                <Text fill="#555555" text="Donors can see their donation history and the real-world impact of their contributions." wrappingWidth="280.0" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

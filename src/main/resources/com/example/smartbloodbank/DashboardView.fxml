@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="mainPane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.DashboardController">
+    <left>
+        <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #ffffff; -fx-padding: 20;">
+            <children>
+                <Text styleClass="logo" text="DonorLink" />
+                <VBox prefHeight="20.0" />
+                <Button onAction="#handleHomeButton" prefWidth="180.0" styleClass="sidebar-button" text="Home" />
+                <Button fx:id="donorDashboardButton" onAction="#handleDonorDashboardButton" prefWidth="180.0" styleClass="sidebar-button" text="My Dashboard" />
+                <VBox VBox.vgrow="ALWAYS" />
+                <Button onAction="#handleLogout" styleClass="primary-button" text="Logout" />
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-padding: 10 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);">
+            <children>
+                <Label fx:id="welcomeLabel" text="Welcome, User!">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+
+</BorderPane>

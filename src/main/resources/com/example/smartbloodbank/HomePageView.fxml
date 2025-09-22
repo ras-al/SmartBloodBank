@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="homeRoot" alignment="TOP_CENTER" spacing="40.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.HomePageController">
+    <padding>
+        <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+    </padding>
+    <children>
+        <VBox alignment="CENTER">
+            <children>
+                <Label fx:id="welcomeLabel" styleClass="welcome-text" text="Welcome back, donor!" />
+                <Text text="Thank you for being a vital part of our community." fill="#555555" />
+            </children>
+        </VBox>
+        <HBox alignment="CENTER" spacing="30.0">
+            <children>
+                <VBox alignment="CENTER" spacing="15.0" styleClass="feature-card">
+                    <children>
+                        <Text text="My Impact">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Text>
+                        <Text text="View your donation history, track lives saved, and see your eligibility." textAlignment="CENTER" wrappingWidth="220.0" />
+                        <Button onAction="#handleDonorDashboardClick" styleClass="primary-button" text="Go to Dashboard" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="15.0" styleClass="feature-card">
+                    <children>
+                        <Text text="Find a Drive">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Text>
+                        <Text text="Discover upcoming blood donation drives and events happening near you." textAlignment="CENTER" wrappingWidth="220.0" />
+                        <Button onAction="#handleFindDriveClick" styleClass="primary-button" text="Search Events" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>

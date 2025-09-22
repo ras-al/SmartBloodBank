@@ -1,0 +1,122 @@
+/* --- DONORLINK MINIMALIST UI THEME (Corrected) --- */
+
+.root {
+    -fx-font-family: 'System';
+    -fx-background-color: #ffffff; /* Cleaner white background */
+}
+
+/* --- Buttons --- */
+.primary-button {
+    -fx-background-color: #e53935; /* Direct color value */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 8px;
+    -fx-padding: 14px 32px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+.primary-button:hover {
+    -fx-background-color: #c62828; /* Direct color value */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 8px;
+}
+.sidebar-button:hover {
+    -fx-background-color: #f0f2f5;
+}
+
+/* --- Layouts & Cards --- */
+.header {
+    -fx-background-color: #ffffff; /* Direct color value */
+    -fx-padding: 16px 40px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #eeeeee; /* Direct color value */
+}
+.logo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: #333333; /* Direct color value */
+}
+.hero-section {
+    -fx-padding: 100px 32px;
+}
+.feature-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 32px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 16, 0, 0, 0);
+    -fx-border-width: 1px;
+    -fx-border-color: #eeeeee;
+    -fx-transition-property: -fx-effect, -fx-translate-y;
+    -fx-transition-duration: 0.3s;
+}
+.feature-card:hover {
+    -fx-translate-y: -5; /* Lifts the card up slightly */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5); /* Deeper shadow */
+}
+
+/* --- Forms --- */
+.form-container {
+    -fx-max-width: 450px;
+    -fx-max-height: 450px;
+    -fx-background-color: #ffffff;
+    -fx-padding: 40px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 5);
+}
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+    -fx-font-size: 14px;
+}
+.text-field, .password-field {
+    -fx-font-size: 16px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px 15px;
+}
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #e53935;
+    -fx-effect: dropshadow(gaussian, rgba(217, 44, 44, 0.2), 10, 0, 0, 0);
+}
+
+/* --- Dashboard Specific Styles --- */
+.dashboard-header {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+.stat-card {
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+}
+.stat-value {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+.stat-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #555555;
+}
+.history-list-view {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-color: #eeeeee;
+}
+.history-list-view .list-cell {
+    -fx-padding: 16px;
+    -fx-background-color: white;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #eeeeee;
+    -fx-font-size: 14px;
+}
