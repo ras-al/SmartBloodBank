@@ -20,7 +20,10 @@ public class LandingPageController {
         ft.setToValue(1.0);
         ft.play();
     }
-
+    @FXML
+    protected void handleRegisterButton() throws IOException {
+        SceneManager.getInstance().switchToScene("/com/example/smartbloodbank/RegisterView.fxml");
+    }
     @FXML
     protected void handleLoginButton() throws IOException {
         SceneManager.getInstance().switchToScene("/com/example/smartbloodbank/LoginView.fxml");

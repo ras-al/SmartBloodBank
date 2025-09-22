@@ -19,7 +19,9 @@
                     </image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS" />
-                <Button onAction="#handleLoginButton" styleClass="primary-button" text="Login / Register" />
+
+                <Button onAction="#handleLoginButton" styleClass="sidebar-button" text="Login" />
+                <Button onAction="#handleRegisterButton" styleClass="primary-button" text="Register" />
             </children>
         </HBox>
     </top>
@@ -41,7 +43,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Text>
-                        <Button onAction="#handleLoginButton" styleClass="primary-button" text="Become a Donor Today" />
+                        <Button onAction="#handleRegisterButton" styleClass="primary-button" text="Become a Donor Today" />
                     </VBox>
 
                     <VBox alignment="TOP_CENTER" spacing="30.0">
