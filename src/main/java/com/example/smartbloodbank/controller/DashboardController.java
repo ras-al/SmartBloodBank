@@ -24,8 +24,11 @@ public class DashboardController {
     private Button postRequestButton;
     @FXML
     private Button viewStatusButton;
+    @FXML
+    private Button partnerHospitalButton;
 
     private User currentUser;
+
 
     public void initData(User user) {
         this.currentUser = user;
@@ -43,7 +46,7 @@ public class DashboardController {
         boolean isHospital = "HospitalStaff".equals(role);
 
         donorDashboardButton.setVisible(isDonor);
-        donorDashboardButton.setManaged(isDonor);
+        donorDashboardButton.setManaged(isDonor); // Also remove from layout
 
         postRequestButton.setVisible(isHospital);
         postRequestButton.setManaged(isHospital);
@@ -51,7 +54,6 @@ public class DashboardController {
         viewStatusButton.setVisible(isHospital);
         viewStatusButton.setManaged(isHospital);
     }
-
 
     @FXML
     protected void handleHomeButton() {
@@ -63,10 +65,15 @@ public class DashboardController {
         }
     }
 
-
     @FXML
     protected void handleProfileButton() {
         loadView("/com/example/smartbloodbank/ProfileView.fxml");
+    }
+
+
+    @FXML
+    protected void handlePartnerHospitalButton() {
+        loadView("/com/example/smartbloodbank/PartnerHospitalView.fxml");
     }
 
 
@@ -115,7 +122,6 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     protected void handleLogout() {
