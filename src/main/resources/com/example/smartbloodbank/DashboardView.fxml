@@ -29,6 +29,9 @@
                 <Button fx:id="postRequestButton" onAction="#handlePostRequestButton" prefWidth="180.0" styleClass="sidebar-button" text="Post Request" />
                 <Button fx:id="viewStatusButton" onAction="#handleViewStatusButton" prefWidth="180.0" styleClass="sidebar-button" text="View Request Status" />
 
+                <Button fx:id="createCampaignButton" onAction="#handleCreateCampaignButton" prefWidth="180.0" styleClass="sidebar-button" text="Create Campaign" />
+                <Button fx:id="manageCampaignsButton" onAction="#handleManageCampaignsButton" prefWidth="180.0" styleClass="sidebar-button" text="Manage Campaigns" />
+
                 <VBox VBox.vgrow="ALWAYS" />
                 <Button onAction="#handleLogout" styleClass="primary-button" text="Logout" />
             </children>

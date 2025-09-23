@@ -23,14 +23,15 @@ public class DashboardController {
     @FXML
     private Button postRequestButton;
     @FXML
-    private Button getPartnerHospitalButton;
-    @FXML
     private Button viewStatusButton;
     @FXML
     private Button partnerHospitalButton;
+    @FXML
+    private Button createCampaignButton; // For Campaign Organizer
+    @FXML
+    private Button manageCampaignsButton; // For Campaign Organizer
 
     private User currentUser;
-
 
     public void initData(User user) {
         this.currentUser = user;
@@ -39,15 +40,15 @@ public class DashboardController {
         // Configure sidebar visibility based on user role
         configureSidebar(user.getRole());
 
-        // Load the default homepage view
+        // Load the default homepage view based on the user's role
         handleHomeButton();
     }
 
     private void configureSidebar(String role) {
         boolean isDonor = "Donor".equals(role);
         boolean isHospital = "HospitalStaff".equals(role);
+        boolean isOrganizer = "CampaignOrganizer".equals(role);
 
-        // Hide/Show role-specific buttons
         donorDashboardButton.setVisible(isDonor);
         donorDashboardButton.setManaged(isDonor);
 
@@ -57,14 +58,19 @@ public class DashboardController {
         viewStatusButton.setVisible(isHospital);
         viewStatusButton.setManaged(isHospital);
 
-        partnerHospitalButton.setVisible(!isDonor);
-        partnerHospitalButton.setManaged(!isDonor);
+        createCampaignButton.setVisible(isOrganizer);
+        createCampaignButton.setManaged(isOrganizer);
+
+        manageCampaignsButton.setVisible(isOrganizer);
+        manageCampaignsButton.setManaged(isOrganizer);
     }
 
     @FXML
     protected void handleHomeButton() {
         if (currentUser != null && "HospitalStaff".equals(currentUser.getRole())) {
             loadView("/com/example/smartbloodbank/HospitalHomePageView.fxml");
+        } else if (currentUser != null && "CampaignOrganizer".equals(currentUser.getRole())) {
+            loadView("/com/example/smartbloodbank/CampaignOrganizerHomePageView.fxml");
         } else {
             // Default to the donor/general homepage
             loadView("/com/example/smartbloodbank/HomePageView.fxml");
@@ -76,45 +82,54 @@ public class DashboardController {
         loadView("/com/example/smartbloodbank/ProfileView.fxml");
     }
 
-
     @FXML
     protected void handlePartnerHospitalButton() {
         loadView("/com/example/smartbloodbank/PartnerHospitalView.fxml");
     }
-
 
     @FXML
     protected void handleDonorDashboardButton() {
         loadView("/com/example/smartbloodbank/DonorDashboardView.fxml");
     }
 
-
     @FXML
     protected void handlePostRequestButton() {
         loadView("/com/example/smartbloodbank/PostRequestView.fxml");
     }
-
 
     @FXML
     protected void handleViewStatusButton() {
         loadView("/com/example/smartbloodbank/RequestStatusView.fxml");
     }
 
+    @FXML
+    protected void handleCreateCampaignButton() {
+        loadView("/com/example/smartbloodbank/CreateCampaignView.fxml");
+    }
+
+    @FXML
+    protected void handleManageCampaignsButton() {
+        loadView("/com/example/smartbloodbank/ManageCampaignsView.fxml");
+    }
 
     private void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent subView = loader.load();
 
-            // Pass data to the correct sub-controllers
+            // Pass data to the correct sub-controllers that need it
             if (fxmlFile.contains("DonorDashboardView")) {
                 DonorDashboardController controller = loader.getController();
                 controller.initData(currentUser);
-            } else if (fxmlFile.contains("HospitalHomePageView")) { // CHECK FOR HOSPITAL FIRST
+            } else if (fxmlFile.contains("HospitalHomePageView")) {
                 HospitalHomePageController controller = loader.getController();
                 controller.setDashboardController(this);
                 controller.initData(currentUser);
-            } else if (fxmlFile.contains("HomePageView")) { // THEN CHECK FOR DONOR/GENERAL
+            } else if (fxmlFile.contains("CampaignOrganizerHomePageView")) {
+                CampaignOrganizerHomePageController controller = loader.getController();
+                controller.setDashboardController(this);
+                controller.initData(currentUser);
+            } else if (fxmlFile.contains("HomePageView")) {
                 HomePageController controller = loader.getController();
                 controller.setDashboardController(this);
                 controller.initData(currentUser);
