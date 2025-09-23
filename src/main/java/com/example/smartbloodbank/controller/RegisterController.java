@@ -59,9 +59,6 @@ public class RegisterController {
         }
     }
 
-    /**
-     * Handles the action of the main registration button.
-     */
     @FXML
     protected void handleRegisterButton() {
         // In a real app, this would save the user to a database.
@@ -81,9 +78,6 @@ public class RegisterController {
         System.out.println("------------------------");
     }
 
-    /**
-     * Handles the "Back to Home" button action in the navbar.
-     */
     @FXML
     protected void handleHomeButton() throws IOException {
         SceneManager.getInstance().switchToScene("/com/example/smartbloodbank/LandingPageView.fxml");

@@ -23,6 +23,8 @@ public class DashboardController {
     @FXML
     private Button postRequestButton;
     @FXML
+    private Button getPartnerHospitalButton;
+    @FXML
     private Button viewStatusButton;
     @FXML
     private Button partnerHospitalButton;
@@ -45,14 +47,18 @@ public class DashboardController {
         boolean isDonor = "Donor".equals(role);
         boolean isHospital = "HospitalStaff".equals(role);
 
+        // Hide/Show role-specific buttons
         donorDashboardButton.setVisible(isDonor);
-        donorDashboardButton.setManaged(isDonor); // Also remove from layout
+        donorDashboardButton.setManaged(isDonor);
 
         postRequestButton.setVisible(isHospital);
         postRequestButton.setManaged(isHospital);
 
         viewStatusButton.setVisible(isHospital);
         viewStatusButton.setManaged(isHospital);
+
+        partnerHospitalButton.setVisible(!isDonor);
+        partnerHospitalButton.setManaged(!isDonor);
     }
 
     @FXML
