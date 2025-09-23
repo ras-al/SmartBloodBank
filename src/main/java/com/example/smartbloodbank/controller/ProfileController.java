@@ -5,6 +5,7 @@ import com.example.smartbloodbank.model.HospitalStaff;
 import com.example.smartbloodbank.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -12,6 +13,7 @@ public class ProfileController {
 
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
     @FXML private VBox roleSpecificFields;
 
     // Role-specific fields
