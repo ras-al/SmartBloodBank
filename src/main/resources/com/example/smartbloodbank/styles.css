@@ -1,13 +1,13 @@
-/* --- DONORLINK MINIMALIST UI THEME (Corrected) --- */
+/* --- DONORLINK MINIMALIST UI THEME --- */
 
 .root {
     -fx-font-family: 'System';
-    -fx-background-color: #ffffff; /* Cleaner white background */
+    -fx-background-color: #f8f9fa; /* Lighter grey background */
 }
 
 /* --- Buttons --- */
 .primary-button {
-    -fx-background-color: #e53935; /* Direct color value */
+    -fx-background-color: #e53935;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 16px;
@@ -17,29 +17,36 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
 }
 .primary-button:hover {
-    -fx-background-color: #c62828; /* Direct color value */
+    -fx-background-color: #c62828;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
 }
 
 .sidebar-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #343a40;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10px 15px;
+    -fx-padding: 12px 20px;
     -fx-background-radius: 8px;
+    -fx-graphic-text-gap: 15; /* Space between icon and text */
 }
 .sidebar-button:hover {
-    -fx-background-color: #f0f2f5;
+    -fx-background-color: #e9ecef;
+    -fx-text-fill: #000000;
 }
+.sidebar-button:focused {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+}
+
 
 /* --- Layouts & Cards --- */
 .header {
-    -fx-background-color: #ffffff; /* Direct color value */
+    -fx-background-color: #ffffff;
     -fx-padding: 16px 40px;
     -fx-border-width: 0 0 1px 0;
-    -fx-border-color: #eeeeee; /* Direct color value */
+    -fx-border-color: #eeeeee;
 }
 .hero-section {
     -fx-padding: 100px 32px;
@@ -85,7 +92,7 @@
     -fx-effect: dropshadow(gaussian, rgba(217, 44, 44, 0.2), 10, 0, 0, 0);
 }
 
-/* --- 6. ChoiceBox, ComboBox & Spinner Styles  --- */
+/* --- ChoiceBox, ComboBox & Spinner Styles  --- */
 .choice-box, .combo-box, .spinner {
     -fx-font-size: 16px;
     -fx-border-color: #dee2e6;
@@ -105,18 +112,6 @@
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
-.stat-card {
-    -fx-alignment: center;
-    -fx-spacing: 8px;
-}
-.stat-value {
-    -fx-font-size: 48px;
-    -fx-font-weight: bold;
-}
-.stat-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #555555;
-}
 .history-list-view {
     -fx-background-color: transparent;
     -fx-border-width: 1px 0 0 0;
@@ -128,38 +123,6 @@
     -fx-border-width: 0 0 1px 0;
     -fx-border-color: #eeeeee;
     -fx-font-size: 14px;
-}
-
-/* --- Typography --- */
-.logo {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-fill: #333333;
-}
-
-/* --- Analytical Dashboard Styles --- */
-.chart {
-    -fx-padding: 10px;
-}
-.chart-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-.chart-content {
-    -fx-padding: 20px;
-    -fx-background-color: white;
-    -fx-background-radius: 12px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 0);
-    -fx-border-width: 1px;
-    -fx-border-color: #e9ecef;
-}
-.chart-pie-label-line {
-    -fx-stroke: #888;
-    -fx-stroke-width: 1px;
-}
-.chart-pie-label {
-    -fx-fill: #333;
-    -fx-font-size: 12px;
 }
 
 /* --- Enhanced Homepage Cards --- */

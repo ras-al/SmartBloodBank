@@ -7,37 +7,68 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainPane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.DashboardController">
     <left>
-        <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #ffffff; -fx-padding: 20;">
-            <children>
-                <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@images/logo.png" />
-                    </image>
-                </ImageView>
-                <VBox prefHeight="20.0" />
-                <Button onAction="#handleHomeButton" prefWidth="180.0" styleClass="sidebar-button" text="Home" />
-                <Button onAction="#handleProfileButton" prefWidth="180.0" styleClass="sidebar-button" text="Profile" />
-                <Button fx:id="partnerHospitalButton" onAction="#handlePartnerHospitalButton" prefWidth="180.0" styleClass="sidebar-button" text="Partner Hospitals" />
-
-                <Button fx:id="donorDashboardButton" onAction="#handleDonorDashboardButton" prefWidth="180.0" styleClass="sidebar-button" text="My Dashboard" />
-
-                <Button fx:id="postRequestButton" onAction="#handlePostRequestButton" prefWidth="180.0" styleClass="sidebar-button" text="Post Request" />
-                <Button fx:id="viewStatusButton" onAction="#handleViewStatusButton" prefWidth="180.0" styleClass="sidebar-button" text="View Request Status" />
-
-                <Button fx:id="createCampaignButton" onAction="#handleCreateCampaignButton" prefWidth="180.0" styleClass="sidebar-button" text="Create Campaign" />
-                <Button fx:id="manageCampaignsButton" onAction="#handleManageCampaignsButton" prefWidth="180.0" styleClass="sidebar-button" text="Manage Campaigns" />
-
-                <VBox VBox.vgrow="ALWAYS" />
-                <Button onAction="#handleLogout" styleClass="primary-button" text="Logout" />
-            </children>
-        </VBox>
+        <StackPane>
+            <VBox alignment="TOP_CENTER" prefWidth="240.0" spacing="10.0" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-width: 0 1 0 0; -fx-border-color: #e0e0e0;">
+                <children>
+                    <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@images/logo.png" />
+                        </image>
+                    </ImageView>
+                    <VBox prefHeight="20.0" />
+                    <Button onAction="#handleHomeButton" prefWidth="200.0" styleClass="sidebar-button" text="Home">
+                        <graphic>
+                            <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button onAction="#handleProfileButton" prefWidth="200.0" styleClass="sidebar-button" text="Profile">
+                        <graphic>
+                            <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="partnerHospitalButton" onAction="#handlePartnerHospitalButton" prefWidth="200.0" styleClass="sidebar-button" text="Partner Hospitals">
+                        <graphic>
+                            <SVGPath content="M18 16v-2h-1v-4c0-1.1-.9-2-2-2h-2V6h1V4h-2v2h-2V4H8v2h1v2H7c-1.1 0-2 .9-2 2v4H4v2h14zM9 12h6v2H9v-2z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="donorDashboardButton" onAction="#handleDonorDashboardButton" prefWidth="200.0" styleClass="sidebar-button" text="My Dashboard">
+                        <graphic>
+                            <SVGPath content="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="postRequestButton" onAction="#handlePostRequestButton" prefWidth="200.0" styleClass="sidebar-button" text="Post Request">
+                        <graphic>
+                            <SVGPath content="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="viewStatusButton" onAction="#handleViewStatusButton" prefWidth="200.0" styleClass="sidebar-button" text="View Request Status">
+                        <graphic>
+                            <SVGPath content="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3l4-4h4c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-9zm0 13c-2.49 0-4.5-2.01-4.5-4.5S9.01 6 11.5 6s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="createCampaignButton" onAction="#handleCreateCampaignButton" prefWidth="200.0" styleClass="sidebar-button" text="Create Campaign">
+                        <graphic>
+                            <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="manageCampaignsButton" onAction="#handleManageCampaignsButton" prefWidth="200.0" styleClass="sidebar-button" text="Manage Campaigns">
+                        <graphic>
+                            <SVGPath content="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" styleClass="sidebar-icon" />
+                        </graphic>
+                    </Button>
+                    <VBox VBox.vgrow="ALWAYS" />
+                    <Button onAction="#handleLogout" prefWidth="200.0" styleClass="primary-button" text="Logout" />
+                </children>
+            </VBox>
+        </StackPane>
     </left>
-
     <top>
         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-padding: 10 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);">
             <children>
@@ -49,5 +80,4 @@
             </children>
         </HBox>
     </top>
-
 </BorderPane>

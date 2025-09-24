@@ -27,9 +27,9 @@ public class DashboardController {
     @FXML
     private Button partnerHospitalButton;
     @FXML
-    private Button createCampaignButton; // For Campaign Organizer
+    private Button createCampaignButton;
     @FXML
-    private Button manageCampaignsButton; // For Campaign Organizer
+    private Button manageCampaignsButton;
 
     private User currentUser;
 
@@ -37,10 +37,8 @@ public class DashboardController {
         this.currentUser = user;
         welcomeLabel.setText("Welcome, " + user.getUsername() + "!");
 
-        // Configure sidebar visibility based on user role
         configureSidebar(user.getRole());
 
-        // Load the default homepage view based on the user's role
         handleHomeButton();
     }
 
@@ -63,6 +61,9 @@ public class DashboardController {
 
         manageCampaignsButton.setVisible(isOrganizer);
         manageCampaignsButton.setManaged(isOrganizer);
+
+        partnerHospitalButton.setVisible(!isDonor);
+        partnerHospitalButton.setManaged(!isDonor);
     }
 
     @FXML
@@ -70,9 +71,8 @@ public class DashboardController {
         if (currentUser != null && "HospitalStaff".equals(currentUser.getRole())) {
             loadView("/com/example/smartbloodbank/HospitalHomePageView.fxml");
         } else if (currentUser != null && "CampaignOrganizer".equals(currentUser.getRole())) {
-            loadView("/com/example/smartbloodbank/CampaignOrganizerHomePageView.fxml");
+            loadView("/com/example.smartbloodbank/CampaignOrganizerHomePageView.fxml");
         } else {
-            // Default to the donor/general homepage
             loadView("/com/example/smartbloodbank/HomePageView.fxml");
         }
     }

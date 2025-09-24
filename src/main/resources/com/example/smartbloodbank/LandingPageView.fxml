@@ -19,7 +19,6 @@
                     </image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS" />
-
                 <Button onAction="#handleLoginButton" styleClass="sidebar-button" text="Login" />
                 <Button onAction="#handleRegisterButton" styleClass="primary-button" text="Register" />
             </children>
@@ -73,6 +72,45 @@
                                     <font><Font name="System Bold" size="18.0" /></font>
                                 </Text>
                                 <Text fill="#555555" text="Donors can see their donation history and the real-world impact of their contributions." wrappingWidth="280.0" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <VBox alignment="TOP_CENTER" spacing="20.0">
+                        <padding>
+                            <Insets left="40.0" right="40.0" />
+                        </padding>
+                        <Text text="Our Mission">
+                            <font>
+                                <Font name="System Bold" size="36.0" />
+                            </font>
+                        </Text>
+                        <Text textAlignment="JUSTIFY" wrappingWidth="800.0">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            Our mission is to build a resilient and efficient healthcare ecosystem. We use technology to bridge the gap between the constant need for blood and the generous individuals ready to help. By optimizing the donation process—from identifying needs to notifying donors—we ensure that life-saving blood reaches patients faster than ever before.
+                        </Text>
+                    </VBox>
+
+                    <VBox alignment="TOP_CENTER" spacing="30.0">
+                        <Text text="Our Impact in Numbers">
+                            <font>
+                                <Font name="System Bold" size="36.0" />
+                            </font>
+                        </Text>
+                        <HBox alignment="CENTER" spacing="80.0" style="-fx-padding: 20 0 0 0;">
+                            <VBox alignment="CENTER" spacing="5.0">
+                                <Text styleClass="info-card-value" text="1,200+" />
+                                <Text styleClass="stat-label" text="Registered Donors" />
+                            </VBox>
+                            <VBox alignment="CENTER" spacing="5.0">
+                                <Text styleClass="info-card-value" text="50+" />
+                                <Text styleClass="stat-label" text="Partner Hospitals" />
+                            </VBox>
+                            <VBox alignment="CENTER" spacing="5.0">
+                                <Text styleClass="info-card-value" text="3,000+" />
+                                <Text styleClass="stat-label" text="Lives Saved" />
                             </VBox>
                         </HBox>
                     </VBox>
