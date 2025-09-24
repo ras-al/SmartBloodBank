@@ -71,7 +71,7 @@ public class DashboardController {
         if (currentUser != null && "HospitalStaff".equals(currentUser.getRole())) {
             loadView("/com/example/smartbloodbank/HospitalHomePageView.fxml");
         } else if (currentUser != null && "CampaignOrganizer".equals(currentUser.getRole())) {
-            loadView("/com/example.smartbloodbank/CampaignOrganizerHomePageView.fxml");
+            loadView("/com/example/smartbloodbank/CampaignOrganizerHomePageView.fxml");
         } else {
             loadView("/com/example/smartbloodbank/HomePageView.fxml");
         }
