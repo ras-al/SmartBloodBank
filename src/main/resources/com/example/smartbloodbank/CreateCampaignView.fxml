@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" spacing="25.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.CreateCampaignController">
+    <padding>
+        <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+    </padding>
+    <children>
+        <Text styleClass="dashboard-header" text="Create a New Campaign" />
+        <VBox maxWidth="450.0" spacing="20.0" styleClass="form-container">
+            <children>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Campaign Name" />
+                    <TextField fx:id="campaignNameField" promptText="e.g., Annual City Blood Drive" />
+                </VBox>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Location" />
+                    <TextField fx:id="locationField" promptText="e.g., Town Hall, Kollam" />
+                </VBox>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Date" />
+                    <DatePicker fx:id="datePicker" prefWidth="400.0" />
+                </VBox>
+                <VBox spacing="8.0">
+                    <Label styleClass="form-label" text="Goal (Units)" />
+                    <Spinner fx:id="goalSpinner" initialValue="50" max="500" min="10" prefWidth="400.0" />
+                </VBox>
+                <Button onAction="#handleCreateCampaign" prefWidth="400.0" styleClass="primary-button" text="Create Campaign" />
+            </children>
+        </VBox>
+    </children>
+</VBox>
