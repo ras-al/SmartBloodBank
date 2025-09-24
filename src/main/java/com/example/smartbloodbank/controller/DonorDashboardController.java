@@ -1,27 +1,30 @@
 package com.example.smartbloodbank.controller;
 
+import com.example.smartbloodbank.model.DonationRecord;
 import com.example.smartbloodbank.model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import java.time.LocalDate;
 
 public class DonorDashboardController {
 
-    @FXML private ListView<String> donationHistoryListView;
+    @FXML private ListView<DonationRecord> donationHistoryListView;
     private User currentUser;
 
     public void initData(User user) {
         this.currentUser = user;
         loadDonationHistory();
-        // The call to loadAnalyticsChart() has been removed
     }
 
     private void loadDonationHistory() {
-        // Corrected dummy data to be consistent (all B-)
-        donationHistoryListView.getItems().clear();
-        donationHistoryListView.getItems().add("Donated 1 unit of B- on Aug 15, 2025");
-        donationHistoryListView.getItems().add("Donated 1 unit of B- on Feb 10, 2025");
-        donationHistoryListView.getItems().add("Donated 1 unit of B- on Sep 01, 2024");
+        // This is dummy data. In the future, this will be fetched from the database.
+        ObservableList<DonationRecord> donationRecords = FXCollections.observableArrayList(
+                new DonationRecord("REC001", LocalDate.of(2025, 8, 15), "Town Hall, Kollam", 1, "B-"),
+                new DonationRecord("REC002", LocalDate.of(2025, 2, 10), "City Hospital, Kollam", 1, "B-"),
+                new DonationRecord("REC003", LocalDate.of(2024, 9, 1), "Technopark, Trivandrum", 1, "B-")
+        );
+        donationHistoryListView.setItems(donationRecords);
     }
-
 }
