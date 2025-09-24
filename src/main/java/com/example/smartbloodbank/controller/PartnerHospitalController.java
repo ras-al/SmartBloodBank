@@ -10,8 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import java.util.Map; // This is the line you need to add
+import java.util.Map;
 
 public class PartnerHospitalController {
 
@@ -21,16 +20,16 @@ public class PartnerHospitalController {
     @FXML
     public void initialize() {
         // Create dummy data with stock levels
-        PartnerHospital lakeshore = new PartnerHospital("Lakeshore Hospital", "Kochi, Kerala", "9876543210");
+        PartnerHospital lakeshore = new PartnerHospital("HOS101", "Lakeshore Hospital", "Kochi, Kerala", "9876543210", "http://lakeshore.api/inventory");
         lakeshore.addStock("A+", 5);
         lakeshore.addStock("B-", 2);
         lakeshore.addStock("O+", 8);
 
-        PartnerHospital aster = new PartnerHospital("Aster Medcity", "Kochi, Kerala", "9123456789");
+        PartnerHospital aster = new PartnerHospital("HOS102", "Aster Medcity", "Kochi, Kerala", "9123456789", "http://aster.api/inventory");
         aster.addStock("AB+", 3);
         aster.addStock("O-", 1);
 
-        PartnerHospital amrita = new PartnerHospital("Amrita Hospital", "Kochi, Kerala", "9555123456");
+        PartnerHospital amrita = new PartnerHospital("HOS103", "Amrita Hospital", "Kochi, Kerala", "9555123456", "http://amrita.api/inventory");
         amrita.addStock("A+", 12);
         amrita.addStock("B+", 7);
         amrita.addStock("O+", 20);
@@ -64,8 +63,7 @@ public class PartnerHospitalController {
                     hospitalName.setText(item.getHospitalName());
                     hospitalAddress.setText(item.getAddress());
 
-                    stockBox.getChildren().clear(); // Clear old stock
-                    // Create a label for each blood type in stock
+                    stockBox.getChildren().clear();
                     for (Map.Entry<String, Integer> entry : item.getBloodStock().entrySet()) {
                         VBox stockItem = new VBox();
                         Text bloodType = new Text(entry.getKey());

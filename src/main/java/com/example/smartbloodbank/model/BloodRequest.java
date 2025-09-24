@@ -48,4 +48,7 @@ public class BloodRequest {
     public void setPostedDate(LocalDate postedDate) {
         this.postedDate = postedDate;
     }
+    public void updateStatus(String newStatus) {
+        this.status = newStatus;
+    }
 }

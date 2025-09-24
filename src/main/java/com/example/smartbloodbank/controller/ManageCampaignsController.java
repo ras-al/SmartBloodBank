@@ -14,11 +14,11 @@ public class ManageCampaignsController {
 
     @FXML
     public void initialize() {
-        // This is dummy data. In a real app, you'd fetch this from a database.
+        // This is dummy data. In a real app, fetch this from a database.
         ObservableList<Campaign> campaigns = FXCollections.observableArrayList(
-                new Campaign("Annual City Blood Drive", "Town Hall, Kollam", LocalDate.now().plusDays(30), 100),
-                new Campaign("University Campus Drive", "Amrita University, Kollam", LocalDate.now().plusDays(45), 75),
-                new Campaign("Corporate Wellness Event", "Technopark, Trivandrum", LocalDate.now().plusDays(60), 50)
+                new Campaign("CAMP01", "Annual City Blood Drive", "Town Hall, Kollam", LocalDate.now().plusDays(30), 100),
+                new Campaign("CAMP02", "University Campus Drive", "Amrita University, Kollam", LocalDate.now().plusDays(45), 75),
+                new Campaign("CAMP03", "Corporate Wellness Event", "Technopark, Trivandrum", LocalDate.now().plusDays(60), 50)
         );
         campaignListView.setItems(campaigns);
     }

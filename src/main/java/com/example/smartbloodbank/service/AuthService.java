@@ -14,7 +14,7 @@ public class AuthService {
     static {
         users.add(new Donor(1, "donor", "pass", "donor@mail.com", "B+", "Kollam"));
         users.add(new HospitalStaff(2, "hospital", "pass", "hospital@mail.com", "HSP101", "Mercy Hospital"));
-        users.add(new CampaignOrganizer(3, "organizer", "pass", "organizer@mail.com", "CampaignOrganizer"));
+        users.add(new CampaignOrganizer(3, "organizer", "pass", "organizer@mail.com", "ORG789", "Red Cross"));
     }
 
     public User login(String username, String password) {
