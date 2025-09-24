@@ -21,15 +21,17 @@ public class RegisterController {
     // Role-Specific Containers
     @FXML private VBox donorFields;
     @FXML private VBox hospitalFields;
+    @FXML private VBox organizerFields;
 
     // Role-Specific Input Fields
     @FXML private ComboBox<String> bloodTypeComboBox;
     @FXML private TextField hospitalNameField;
+    @FXML private TextField organizationNameField;
 
     @FXML
     public void initialize() {
-        // Populate the role selection box
-        roleChoiceBox.setItems(FXCollections.observableArrayList("Donor", "Hospital Staff"));
+        // Populate the role selection box with all three roles
+        roleChoiceBox.setItems(FXCollections.observableArrayList("Donor", "Hospital Staff", "Campaign Organizer"));
 
         // Add a listener to show/hide fields based on role selection
         roleChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -48,6 +50,8 @@ public class RegisterController {
         donorFields.setManaged(false);
         hospitalFields.setVisible(false);
         hospitalFields.setManaged(false);
+        organizerFields.setVisible(false);
+        organizerFields.setManaged(false);
 
         // Show the fields for the selected role
         if ("Donor".equals(role)) {
@@ -56,13 +60,15 @@ public class RegisterController {
         } else if ("Hospital Staff".equals(role)) {
             hospitalFields.setVisible(true);
             hospitalFields.setManaged(true);
+        } else if ("Campaign Organizer".equals(role)) {
+            organizerFields.setVisible(true);
+            organizerFields.setManaged(true);
         }
     }
 
     @FXML
     protected void handleRegisterButton() {
         // In a real app, this would save the user to a database.
-        // For now, we just print the details to the console to prove it works.
         String username = usernameField.getText();
         String role = roleChoiceBox.getValue();
 
@@ -74,6 +80,8 @@ public class RegisterController {
             System.out.println("Blood Type: " + bloodTypeComboBox.getValue());
         } else if ("Hospital Staff".equals(role)) {
             System.out.println("Hospital: " + hospitalNameField.getText());
+        } else if ("Campaign Organizer".equals(role)) {
+            System.out.println("Organization: " + organizationNameField.getText());
         }
         System.out.println("------------------------");
     }
