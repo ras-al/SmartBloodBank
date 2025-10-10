@@ -1,19 +1,24 @@
 package com.example.smartbloodbank.main;
 
+import com.example.smartbloodbank.service.FirestoreService;
+import com.example.smartbloodbank.service.GeminiService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Load the initial landing page
+        // Initialize Firestore and Gemini
+        FirestoreService.initialize();
+        GeminiService.initialize();
+
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/com/example/smartbloodbank/LandingPageView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        // Initialize the SceneManager with the primary stage
         SceneManager.initialize(stage);
 
         stage.setTitle("DonorLink - Smart Blood Bank");

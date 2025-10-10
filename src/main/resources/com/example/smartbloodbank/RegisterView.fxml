@@ -12,9 +12,7 @@
         <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
             <children>
                 <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@images/logo.png" />
-                    </image>
+                    <image><Image url="@images/logo.png" /></image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS" />
                 <Button onAction="#handleHomeButton" styleClass="primary-button" text="Back to Home" />
@@ -22,24 +20,39 @@
         </HBox>
     </top>
     <center>
-        <VBox alignment="CENTER" spacing="20.0" styleClass="form-container">
-            <Text text="Create an Account" textAlignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="32.0" />
-                </font>
-            </Text>
-            <VBox spacing="8.0">
-                <Label styleClass="form-label" text="Username" />
-                <TextField fx:id="usernameField" promptText="Enter a username" />
-            </VBox>
-            <VBox spacing="8.0">
-                <Label styleClass="form-label" text="Password" />
-                <PasswordField fx:id="passwordField" promptText="Enter a password" />
-            </VBox>
+        <VBox alignment="CENTER" spacing="15.0" styleClass="form-container">
+            <Text text="Create an Account"><font><Font name="System Bold" size="32.0" /></font></Text>
+            <Label fx:id="statusLabel" textFill="RED" wrapText="true" />
+
             <VBox spacing="8.0">
                 <Label styleClass="form-label" text="Email" />
                 <TextField fx:id="emailField" promptText="Enter your email" />
             </VBox>
+            <VBox spacing="8.0">
+                <Label styleClass="form-label" text="Username" />
+                <TextField fx:id="usernameField" promptText="Enter a username" />
+            </VBox>
+
+            <VBox spacing="8.0">
+                <Label styleClass="form-label" text="Password" />
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <PasswordField fx:id="passwordField" promptText="Enter a password" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="passwordTextField" promptText="Enter a password" managed="false" visible="false" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+            <VBox spacing="8.0">
+                <Label styleClass="form-label" text="Confirm Password" />
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm your password" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="confirmPasswordTextField" promptText="Confirm your password" managed="false" visible="false" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+
+            <VBox alignment="CENTER_LEFT" spacing="10">
+                <CheckBox fx:id="showPasswordCheckBox" text="Show Password" />
+            </VBox>
+
+
             <VBox spacing="8.0">
                 <Label styleClass="form-label" text="Register As" />
                 <ChoiceBox fx:id="roleChoiceBox" prefWidth="400.0" />
@@ -53,6 +66,10 @@
                 <VBox fx:id="hospitalFields" managed="false" spacing="8.0" visible="false">
                     <Label styleClass="form-label" text="Hospital Name" />
                     <TextField fx:id="hospitalNameField" promptText="Enter hospital name" />
+                </VBox>
+                <VBox fx:id="organizerFields" managed="false" spacing="8.0" visible="false">
+                    <Label styleClass="form-label" text="Organization Name" />
+                    <TextField fx:id="organizationNameField" promptText="Enter organization name" />
                 </VBox>
             </VBox>
 

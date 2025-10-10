@@ -19,9 +19,7 @@
         <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
             <children>
                 <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@images/logo.png" />
-                    </image>
+                    <image><Image url="@images/logo.png" /></image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS" />
                 <Button onAction="#handleHomeButton" styleClass="primary-button" text="Back to Home" />
@@ -32,15 +30,11 @@
         <StackPane>
             <VBox fx:id="formContainer" alignment="CENTER" spacing="20.0" styleClass="form-container">
                 <children>
-                    <Text text="Welcome Back" textAlignment="CENTER">
-                        <font>
-                            <Font name="System Bold" size="32.0" />
-                        </font>
-                    </Text>
+                    <Text text="Welcome Back"><font><Font name="System Bold" size="32.0" /></font></Text>
                     <Label fx:id="statusLabel" textFill="#D92C2C" />
                     <VBox spacing="8.0">
-                        <Label styleClass="form-label" text="Username" />
-                        <TextField fx:id="usernameField" promptText="Enter your username" />
+                        <Label styleClass="form-label" text="Email or Username" />
+                        <TextField fx:id="identifierField" promptText="Enter email or username" />
                     </VBox>
                     <VBox spacing="8.0">
                         <Label styleClass="form-label" text="Password" />

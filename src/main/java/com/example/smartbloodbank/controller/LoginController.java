@@ -15,35 +15,31 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Label statusLabel;
-    @FXML
-    private VBox formContainer; // The container for the login form to be animated
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
+    @FXML private TextField identifierField; // Changed from emailField
+    @FXML private PasswordField passwordField;
+    @FXML private Label statusLabel;
+    @FXML private VBox formContainer;
 
     private final AuthService authService = new AuthService();
 
     @FXML
     public void initialize() {
-        // Set initial state for animation (invisible and slightly down)
         formContainer.setOpacity(0);
         formContainer.setTranslateY(20);
-
-        // Create and play the fade-in and slide-up animation
         FadeTransition ft = new FadeTransition(Duration.millis(600), formContainer);
         ft.setToValue(1.0);
-
         TranslateTransition tt = new TranslateTransition(Duration.millis(600), formContainer);
         tt.setToY(0);
-
         ft.play();
         tt.play();
     }
@@ -53,21 +49,35 @@ public class LoginController {
         try {
             SceneManager.getInstance().switchToScene("/com/example/smartbloodbank/LandingPageView.fxml");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to switch to LandingPageView", e);
         }
     }
 
     @FXML
     protected void handleLoginButtonAction(ActionEvent event) {
-        String username = usernameField.getText();
+        String identifier = identifierField.getText();
         String password = passwordField.getText();
-        User user = authService.login(username, password);
 
-        if (user != null) {
-            statusLabel.setText("Login Successful!");
-            switchToDashboard(user);
-        } else {
-            statusLabel.setText("Invalid username or password.");
+        try {
+            String uid = authService.login(identifier, password);
+            if (uid != null) {
+                User user = authService.getUserProfile(uid);
+                if (user != null) {
+                    statusLabel.setText("Login Successful!");
+                    LOGGER.info("User '{}' ({}) logged in successfully.", user.getUsername(), user.getRole());
+                    switchToDashboard(user);
+                } else {
+                    statusLabel.setText("Login successful, but profile not found.");
+                    LOGGER.error("CRITICAL: User with UID {} authenticated but has no profile in Firestore.", uid);
+                }
+            } else {
+                statusLabel.setText("Invalid username/email or password.");
+                LOGGER.warn("Failed login attempt for identifier: {}", identifier);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            statusLabel.setText("An error occurred during login.");
+            LOGGER.error("Exception during login for identifier: {}", identifier, e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -75,15 +85,12 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/smartbloodbank/DashboardView.fxml"));
             Parent dashboardRoot = loader.load();
-
             DashboardController controller = loader.getController();
             controller.initData(user);
-
-            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Stage stage = (Stage) identifierField.getScene().getWindow();
             stage.getScene().setRoot(dashboardRoot);
-
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to load DashboardView for user: {}", user.getUsername(), e);
         }
     }
 }
