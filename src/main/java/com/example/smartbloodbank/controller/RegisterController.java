@@ -20,7 +20,7 @@ public class RegisterController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=?])(?=\\S+$).{8,}$");
 
     @FXML private TextField usernameField, emailField;
     @FXML private PasswordField passwordField, confirmPasswordField;
@@ -41,7 +41,6 @@ public class RegisterController {
         bloodTypeComboBox.setItems(FXCollections.observableArrayList("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
         statusLabel.setText("");
 
-        // Bind visibility of password fields to the checkbox
         passwordTextField.managedProperty().bind(showPasswordCheckBox.selectedProperty());
         passwordTextField.visibleProperty().bind(showPasswordCheckBox.selectedProperty());
         passwordField.managedProperty().bind(showPasswordCheckBox.selectedProperty().not());
@@ -58,17 +57,19 @@ public class RegisterController {
     private void updateForm(String role) {
         donorFields.setVisible("Donor".equals(role));
         donorFields.setManaged("Donor".equals(role));
-        hospitalFields.setVisible("Hospital Staff".equals(role));
-        hospitalFields.setManaged("Hospital Staff".equals(role));
-        organizerFields.setVisible("Campaign Organizer".equals(role));
-        organizerFields.setManaged("Campaign Organizer".equals(role));
+
+        // --- THIS IS THE CORRECTED LOGIC ---
+        hospitalFields.setVisible("HospitalStaff".equals(role));
+        hospitalFields.setManaged("HospitalStaff".equals(role));
+        organizerFields.setVisible("CampaignOrganizer".equals(role));
+        organizerFields.setManaged("CampaignOrganizer".equals(role));
     }
 
     @FXML
     protected void handleRegisterButton() {
         try {
             if (!validateInputs()) {
-                return; // Stop if validation fails
+                return;
             }
 
             Map<String, Object> userData = new HashMap<>();
@@ -78,9 +79,13 @@ public class RegisterController {
             userData.put("role", roleChoiceBox.getValue());
 
             String role = roleChoiceBox.getValue();
-            if ("Donor".equals(role)) userData.put("bloodType", bloodTypeComboBox.getValue());
-            else if ("HospitalStaff".equals(role)) userData.put("hospitalName", hospitalNameField.getText());
-            else if ("CampaignOrganizer".equals(role)) userData.put("organizationName", organizationNameField.getText());
+            if ("Donor".equals(role)) {
+                userData.put("bloodType", bloodTypeComboBox.getValue());
+            } else if ("HospitalStaff".equals(role)) {
+                userData.put("hospitalName", hospitalNameField.getText());
+            } else if ("CampaignOrganizer".equals(role)) {
+                userData.put("organizationName", organizationNameField.getText());
+            }
 
             authService.registerUser(userData);
             showAlert("Success", "Registration successful! You can now log in.");
@@ -126,7 +131,7 @@ public class RegisterController {
             return false;
         }
 
-        statusLabel.setText(""); // Clear errors if all checks pass
+        statusLabel.setText("");
         return true;
     }
 

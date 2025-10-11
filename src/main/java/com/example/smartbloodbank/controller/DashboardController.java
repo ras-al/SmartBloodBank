@@ -66,8 +66,8 @@ public class DashboardController {
         manageCampaignsButton.setVisible(isOrganizer);
         manageCampaignsButton.setManaged(isOrganizer);
 
-        partnerHospitalButton.setVisible(!isDonor);
-        partnerHospitalButton.setManaged(!isDonor);
+        partnerHospitalButton.setVisible(isHospital);
+        partnerHospitalButton.setManaged(isHospital);
 
         notificationsButton.setVisible(isDonor);
         notificationsButton.setManaged(isDonor);
@@ -157,7 +157,8 @@ public class DashboardController {
         loadView("/com/example/smartbloodbank/ManageCampaignsView.fxml");
     }
 
-    private void loadView(String fxmlFile) {
+    // Public access for HomePageController to call it
+    public void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent subView = loader.load();
@@ -190,8 +191,9 @@ public class DashboardController {
             } else if (fxmlFile.contains("NotificationsView")) {
                 NotificationsController controller = loader.getController();
                 controller.initData(currentUser);
+            } else if (fxmlFile.contains("FindDriveView")) {
+                // No specific data needs to be passed to FindDriveController
             }
-
 
             mainPane.setCenter(subView);
         } catch (IOException e) {

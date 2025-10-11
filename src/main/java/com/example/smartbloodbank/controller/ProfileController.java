@@ -1,5 +1,6 @@
 package com.example.smartbloodbank.controller;
 
+import com.example.smartbloodbank.model.CampaignOrganizer;
 import com.example.smartbloodbank.model.Donor;
 import com.example.smartbloodbank.model.HospitalStaff;
 import com.example.smartbloodbank.model.User;
@@ -28,6 +29,8 @@ public class ProfileController {
     @FXML private TextField bloodTypeField;
     @FXML private VBox hospitalFields;
     @FXML private TextField hospitalNameField;
+    @FXML private VBox organizerFields; // New field
+    @FXML private TextField organizationNameField; // New field
 
     private User currentUser;
 
@@ -38,6 +41,7 @@ public class ProfileController {
         usernameField.setText(user.getUsername());
         emailField.setText(user.getEmail());
 
+        // Show and populate role-specific fields
         if (user instanceof Donor) {
             Donor donor = (Donor) user;
             bloodTypeField.setText(donor.getBloodType());
@@ -52,6 +56,13 @@ public class ProfileController {
             hospitalFields.setManaged(true);
             roleSpecificFields.setVisible(true);
             roleSpecificFields.setManaged(true);
+        } else if (user instanceof CampaignOrganizer) {
+            CampaignOrganizer organizer = (CampaignOrganizer) user;
+            organizationNameField.setText(organizer.getOrganizationName());
+            organizerFields.setVisible(true);
+            organizerFields.setManaged(true);
+            roleSpecificFields.setVisible(true);
+            roleSpecificFields.setManaged(true);
         }
     }
 
@@ -64,20 +75,19 @@ public class ProfileController {
 
         Map<String, Object> updatedData = new HashMap<>();
         updatedData.put("username", usernameField.getText());
-        updatedData.put("email", emailField.getText());
 
         if (currentUser instanceof HospitalStaff) {
             updatedData.put("hospitalName", hospitalNameField.getText());
+        } else if (currentUser instanceof CampaignOrganizer) {
+            updatedData.put("organizationName", organizationNameField.getText());
         }
 
         FirestoreService.getDb().collection("users").document(currentUser.getUid()).update(updatedData);
 
         try {
             UserRecord.UpdateRequest request = new UserRecord.UpdateRequest(currentUser.getUid())
-                    .setEmail(emailField.getText())
                     .setDisplayName(usernameField.getText());
 
-            // Only update the password if the field is not empty
             if (passwordField.getText() != null && !passwordField.getText().isEmpty()) {
                 request.setPassword(passwordField.getText());
             }

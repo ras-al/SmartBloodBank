@@ -44,7 +44,11 @@ public class CreateCampaignController {
         Firestore db = FirestoreService.getDb();
         db.collection("campaigns").document(campaignId).set(newCampaign);
 
-        showAlert("Success", "The new campaign has been created and saved successfully!");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Campaign Created!");
+        alert.setHeaderText("Your new campaign has been saved.");
+        alert.setContentText("Share the public link to promote your drive:\nhttps://donorlink-app.com/campaign/" + campaignId);
+        alert.showAndWait();
 
         campaignNameField.clear();
         locationField.clear();

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Donor extends User {
     private String bloodType;
-    private LocalDate lastDonationDate;
+    private String lastDonationDate; // Should be String to match our other models
     private String location;
 
     public Donor() {
@@ -24,10 +24,10 @@ public class Donor extends User {
     public void setBloodType(String bloodType) {
         this.bloodType = bloodType;
     }
-    public LocalDate getLastDonationDate() {
+    public String getLastDonationDate() {
         return lastDonationDate;
     }
-    public void setLastDonationDate(LocalDate lastDonationDate) {
+    public void setLastDonationDate(String lastDonationDate) {
         this.lastDonationDate = lastDonationDate;
     }
     public String getLocation() {
@@ -35,5 +35,10 @@ public class Donor extends User {
     }
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return getUsername();
     }
 }

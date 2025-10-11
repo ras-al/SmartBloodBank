@@ -65,15 +65,25 @@ public class NotificationsController {
         card.getStyleClass().add("notification-card");
         card.setAlignment(Pos.CENTER);
 
-        // Extract data directly from the document
         String message = doc.getString("message");
         Long timestamp = doc.getLong("timestamp");
+        String status = doc.getString("status");
+
+        if ("Fulfilled".equalsIgnoreCase(status)) {
+            card.setStyle("-fx-border-color: #27ae60; -fx-opacity: 0.6;");
+        }
 
         VBox messageContainer = new VBox(5);
         Text title = new Text("Urgent Request");
         title.getStyleClass().add("notification-title");
-        Text subtitle = new Text(message);
+
+        String subtitleText = message;
+        if ("Fulfilled".equalsIgnoreCase(status)) {
+            subtitleText = "[COMPLETED] " + message;
+        }
+        Text subtitle = new Text(subtitleText);
         subtitle.getStyleClass().add("notification-subtitle");
+
         messageContainer.getChildren().addAll(title, subtitle);
 
         Region spacer = new Region();

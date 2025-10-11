@@ -285,3 +285,8 @@
     -fx-fill: #6c757d;
     -fx-font-style: italic;
 }
+
+.campaign-completed {
+    -fx-opacity: 0.7;
+    -fx-border-color: #27ae60; /* Green border */
+}

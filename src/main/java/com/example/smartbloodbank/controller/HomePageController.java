@@ -3,7 +3,6 @@ package com.example.smartbloodbank.controller;
 import com.example.smartbloodbank.model.User;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -27,9 +26,6 @@ public class HomePageController {
         ft.play();
     }
 
-    /**
-     * Handles the "Go to Dashboard" button click.
-     */
     @FXML
     protected void handleDonorDashboardClick() {
         if (dashboardController != null) {
@@ -37,16 +33,11 @@ public class HomePageController {
         }
     }
 
-    /**
-     * Handles the "Search Events" button click (new method).
-     */
     @FXML
     protected void handleFindDriveClick() {
-        // Placeholder functionality for now
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Feature Coming Soon");
-        alert.setHeaderText("Find a Drive");
-        alert.setContentText("This feature will allow you to search for nearby donation events. Stay tuned!");
-        alert.showAndWait();
+        // This is now a fully implemented feature
+        if (dashboardController != null) {
+            dashboardController.loadView("/com/example/smartbloodbank/FindDriveView.fxml");
+        }
     }
 }

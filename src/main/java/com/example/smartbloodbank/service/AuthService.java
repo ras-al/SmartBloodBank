@@ -33,8 +33,7 @@ public class AuthService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    // !!! IMPORTANT: Remember to replace this with your Web API Key from Firebase !!!
-    private final String FIREBASE_API_KEY = "AIzaSyBAq-dkabqpL80rqE3IBHoUs85Aohpoisc";
+    private final String FIREBASE_API_KEY = System.getenv("FIREBASE_WEB_API_KEY");
     private final String AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + FIREBASE_API_KEY;
 
     public UserRecord registerUser(Map<String, Object> userData) throws FirebaseAuthException {
