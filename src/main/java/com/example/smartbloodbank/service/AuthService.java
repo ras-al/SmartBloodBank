@@ -1,5 +1,8 @@
 package com.example.smartbloodbank.service;
 
+import com.example.smartbloodbank.model.CampaignOrganizer;
+import com.example.smartbloodbank.model.Donor;
+import com.example.smartbloodbank.model.HospitalStaff;
 import com.example.smartbloodbank.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
@@ -52,22 +55,11 @@ public class AuthService {
         return userRecord;
     }
 
-    /**
-     * Checks if a username already exists in the Firestore 'users' collection.
-     * @param username The username to check.
-     * @return true if the username exists, false otherwise.
-     */
     public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("username", username).limit(1).get();
         return !future.get().isEmpty();
     }
 
-    /**
-     * Authenticates a user with either their email or username.
-     * @param identifier The user's email or username.
-     * @param password The user's password.
-     * @return The user's UID if successful, otherwise null.
-     */
     public String login(String identifier, String password) throws ExecutionException, InterruptedException {
         String email = identifier;
         // If the identifier doesn't look like an email, assume it's a username
@@ -79,11 +71,9 @@ public class AuthService {
                 LOGGER.warn("Login failed: Username '{}' not found.", identifier);
                 return null; // Username not found
             }
-            // Get the email associated with the found username
             email = querySnapshot.getDocuments().get(0).getString("email");
             LOGGER.debug("Found email '{}' for username '{}'.", email, identifier);
         }
-        // Proceed with the standard email-based authentication
         return loginWithEmailPassword(email, password);
     }
 
@@ -118,7 +108,37 @@ public class AuthService {
             DocumentSnapshot document = future.get();
             if (document.exists()) {
                 LOGGER.info("Successfully fetched profile for UID: {}", uid);
-                return document.toObject(User.class);
+
+                String role = document.getString("role");
+                if (role == null) {
+                    LOGGER.error("CRITICAL: User document for UID {} is missing 'role' field.", uid);
+                    return document.toObject(User.class);
+                }
+
+                User user;
+                switch (role) {
+                    case "Donor":
+                        user = document.toObject(Donor.class);
+                        break;
+                    case "Hospital Staff":
+                    case "HospitalStaff":
+                        user = document.toObject(HospitalStaff.class);
+                        break;
+                    case "Campaign Organizer":
+                    case "CampaignOrganizer":
+                        user = document.toObject(CampaignOrganizer.class);
+                        break;
+                    default:
+                        LOGGER.warn("Unrecognized role '{}' for UID {}. Defaulting to base User.", role, uid);
+                        user = document.toObject(User.class);
+                        break;
+                }
+
+                if (user != null) {
+                    user.setUid(document.getId());
+                }
+                return user;
+
             } else {
                 LOGGER.error("CRITICAL: No profile document found in Firestore for authenticated UID: {}", uid);
                 return null;

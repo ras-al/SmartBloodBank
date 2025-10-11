@@ -7,7 +7,11 @@ public class Donor extends User {
     private LocalDate lastDonationDate;
     private String location;
 
-    public Donor(int userId, String username, String password, String email, String bloodType, String location) {
+    public Donor() {
+        super();
+    }
+
+    public Donor(String userId, String username, String password, String email, String bloodType, String location) {
         super(userId, username, password, email, "Donor");
         this.bloodType = bloodType;
         this.location = location;

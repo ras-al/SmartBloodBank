@@ -3,11 +3,18 @@ package com.example.smartbloodbank.controller;
 import com.example.smartbloodbank.model.Donor;
 import com.example.smartbloodbank.model.HospitalStaff;
 import com.example.smartbloodbank.model.User;
+import com.example.smartbloodbank.service.FirestoreService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileController {
 
@@ -31,7 +38,6 @@ public class ProfileController {
         usernameField.setText(user.getUsername());
         emailField.setText(user.getEmail());
 
-        // Show and populate role-specific fields
         if (user instanceof Donor) {
             Donor donor = (Donor) user;
             bloodTypeField.setText(donor.getBloodType());
@@ -51,10 +57,37 @@ public class ProfileController {
 
     @FXML
     protected void handleSaveChanges() {
-        // In a real app, you would save this data back to the database
-        System.out.println("Saving changes for user: " + usernameField.getText());
+        if (currentUser == null || currentUser.getUid() == null) {
+            showAlert("Error", "Could not save changes. User not loaded correctly.");
+            return;
+        }
 
-        showAlert("Success", "Your profile information has been updated.");
+        Map<String, Object> updatedData = new HashMap<>();
+        updatedData.put("username", usernameField.getText());
+        updatedData.put("email", emailField.getText());
+
+        if (currentUser instanceof HospitalStaff) {
+            updatedData.put("hospitalName", hospitalNameField.getText());
+        }
+
+        FirestoreService.getDb().collection("users").document(currentUser.getUid()).update(updatedData);
+
+        try {
+            UserRecord.UpdateRequest request = new UserRecord.UpdateRequest(currentUser.getUid())
+                    .setEmail(emailField.getText())
+                    .setDisplayName(usernameField.getText());
+
+            // Only update the password if the field is not empty
+            if (passwordField.getText() != null && !passwordField.getText().isEmpty()) {
+                request.setPassword(passwordField.getText());
+            }
+
+            FirebaseAuth.getInstance().updateUser(request);
+            showAlert("Success", "Your profile information has been updated.");
+
+        } catch (FirebaseAuthException e) {
+            showAlert("Auth Error", "Failed to update authentication details: " + e.getMessage());
+        }
     }
 
     private void showAlert(String title, String content) {

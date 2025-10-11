@@ -8,7 +8,10 @@ public class CampaignOrganizer extends User {
     private String organizationName;
     private List<Campaign> createdCampaigns;
 
-    public CampaignOrganizer(int userId, String username, String password, String email, String organizationId, String organizationName) {
+    public CampaignOrganizer() {
+        super();
+    }
+    public CampaignOrganizer(String userId, String username, String password, String email, String organizationId, String organizationName) {
         super(userId, username, password, email, "CampaignOrganizer");
         this.organizationId = organizationId;
         this.organizationName = organizationName;

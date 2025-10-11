@@ -7,9 +7,13 @@ public class BloodRequest {
     private String bloodType;
     private int unitsRequired;
     private String status;
-    private LocalDate postedDate;
+    private String postedDate;
 
-    public BloodRequest(int requestId, String bloodType, int unitsRequired, String status, LocalDate postedDate) {
+    public BloodRequest() {
+
+    }
+
+    public BloodRequest(int requestId, String bloodType, int unitsRequired, String status, String postedDate) {
         this.requestId = requestId;
         this.bloodType = bloodType;
         this.unitsRequired = unitsRequired;
@@ -17,7 +21,6 @@ public class BloodRequest {
         this.postedDate = postedDate;
     }
 
-    // --- Getters and Setters for all fields ---
     public int getRequestId() {
         return requestId;
     }
@@ -42,10 +45,10 @@ public class BloodRequest {
     public void setStatus(String status) {
         this.status = status;
     }
-    public LocalDate getPostedDate() {
+    public String getPostedDate() {
         return postedDate;
     }
-    public void setPostedDate(LocalDate postedDate) {
+    public void setPostedDate(String postedDate) {
         this.postedDate = postedDate;
     }
     public void updateStatus(String newStatus) {

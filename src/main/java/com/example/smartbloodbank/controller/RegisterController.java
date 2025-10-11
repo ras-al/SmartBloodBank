@@ -36,7 +36,7 @@ public class RegisterController {
 
     @FXML
     public void initialize() {
-        roleChoiceBox.setItems(FXCollections.observableArrayList("Donor", "Hospital Staff", "Campaign Organizer"));
+        roleChoiceBox.setItems(FXCollections.observableArrayList("Donor", "HospitalStaff", "CampaignOrganizer"));
         roleChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateForm(newVal));
         bloodTypeComboBox.setItems(FXCollections.observableArrayList("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
         statusLabel.setText("");
@@ -79,8 +79,8 @@ public class RegisterController {
 
             String role = roleChoiceBox.getValue();
             if ("Donor".equals(role)) userData.put("bloodType", bloodTypeComboBox.getValue());
-            else if ("Hospital Staff".equals(role)) userData.put("hospitalName", hospitalNameField.getText());
-            else if ("Campaign Organizer".equals(role)) userData.put("organizationName", organizationNameField.getText());
+            else if ("HospitalStaff".equals(role)) userData.put("hospitalName", hospitalNameField.getText());
+            else if ("CampaignOrganizer".equals(role)) userData.put("organizationName", organizationNameField.getText());
 
             authService.registerUser(userData);
             showAlert("Success", "Registration successful! You can now log in.");

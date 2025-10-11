@@ -2,19 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" spacing="25.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.RequestStatusController">
+<VBox alignment="TOP_CENTER" spacing="25.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.smartbloodbank.controller.NotificationsController">
     <padding>
         <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
     </padding>
     <children>
-        <Text styleClass="dashboard-header" text="Active Blood Requests" />
+        <Text styleClass="dashboard-header" text="Notifications" />
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
             <content>
-                <FlowPane fx:id="requestFlowPane" hgap="30.0" vgap="30.0" />
+                <VBox fx:id="notificationsVBox" spacing="15.0" />
             </content>
         </ScrollPane>
     </children>

@@ -4,7 +4,11 @@ public class HospitalStaff extends User {
     private String hospitalId;
     private String hospitalName;
 
-    public HospitalStaff(int userId, String username, String password, String email, String hospitalId, String hospitalName) {
+    public HospitalStaff() {
+        super();
+    }
+
+    public HospitalStaff(String userId, String username, String password, String email, String hospitalId, String hospitalName) {
         super(userId, username, password, email, "HospitalStaff");
         this.hospitalId = hospitalId;
         this.hospitalName = hospitalName;

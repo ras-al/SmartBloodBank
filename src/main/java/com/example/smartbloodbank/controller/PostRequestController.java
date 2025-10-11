@@ -33,11 +33,11 @@ public class PostRequestController {
         }
 
         BloodRequest newRequest = new BloodRequest(
-                (int) (System.currentTimeMillis() / 1000), // Unique ID
+                (int) (System.currentTimeMillis() / 1000),
                 bloodType,
                 units,
                 "Searching",
-                LocalDate.now()
+                LocalDate.now().toString()
         );
 
         FirestoreService.getDb().collection("bloodRequests").document(String.valueOf(newRequest.getRequestId())).set(newRequest);

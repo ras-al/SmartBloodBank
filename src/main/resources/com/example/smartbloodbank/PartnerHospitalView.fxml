@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -11,6 +12,10 @@
     </padding>
     <children>
         <Text styleClass="dashboard-header" text="Our Partner Hospitals" />
-        <ListView fx:id="hospitalListView" styleClass="history-list-view" VBox.vgrow="ALWAYS" />
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+            <content>
+                <FlowPane fx:id="hospitalFlowPane" hgap="30.0" vgap="30.0" />
+            </content>
+        </ScrollPane>
     </children>
 </VBox>

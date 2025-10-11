@@ -1,0 +1,94 @@
+package com.example.smartbloodbank.controller;
+
+import com.example.smartbloodbank.model.User;
+import com.example.smartbloodbank.service.FirestoreService;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+public class NotificationsController {
+
+    @FXML
+    private VBox notificationsVBox;
+    private User currentUser;
+    private final Firestore db = FirestoreService.getDb();
+
+    public void initData(User user) {
+        this.currentUser = user;
+        loadNotifications();
+    }
+
+    private void loadNotifications() {
+        if (currentUser == null) return;
+
+        db.collection("notifications")
+                .whereEqualTo("donorId", currentUser.getUid())
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        System.err.println("Listen failed: " + e);
+                        return;
+                    }
+
+                    List<Node> notificationCards = new ArrayList<>();
+                    if (snapshots != null) {
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            notificationCards.add(createNotificationCard(doc));
+                        }
+                    }
+
+                    Platform.runLater(() -> {
+                        notificationsVBox.getChildren().clear();
+                        notificationsVBox.getChildren().addAll(notificationCards);
+                    });
+                });
+    }
+
+    private Node createNotificationCard(QueryDocumentSnapshot doc) {
+        HBox card = new HBox(15);
+        card.getStyleClass().add("notification-card");
+        card.setAlignment(Pos.CENTER);
+
+        // Extract data directly from the document
+        String message = doc.getString("message");
+        Long timestamp = doc.getLong("timestamp");
+
+        VBox messageContainer = new VBox(5);
+        Text title = new Text("Urgent Request");
+        title.getStyleClass().add("notification-title");
+        Text subtitle = new Text(message);
+        subtitle.getStyleClass().add("notification-subtitle");
+        messageContainer.getChildren().addAll(title, subtitle);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Text time = new Text(formatTimestamp(timestamp));
+        time.getStyleClass().add("notification-time");
+
+        card.getChildren().addAll(messageContainer, spacer, time);
+        return card;
+    }
+
+    private String formatTimestamp(Long timestamp) {
+        if (timestamp == null) return "";
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        return dateTime.format(DateTimeFormatter.ofPattern("MMM dd, HH:mm"));
+    }
+}

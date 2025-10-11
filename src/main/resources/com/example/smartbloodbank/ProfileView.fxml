@@ -35,7 +35,7 @@
                         <VBox spacing="8.0">
                             <children>
                                 <Label styleClass="form-label" text="Email Address" />
-                                <TextField fx:id="emailField" promptText="Your email address" />
+                                <TextField fx:id="emailField" promptText="Your email address" editable="false" styleClass="text-field, read-only-field" />
                             </children>
                         </VBox>
                         <VBox spacing="8.0">
@@ -53,7 +53,7 @@
                         <VBox fx:id="donorFields" managed="false" spacing="8.0" visible="false">
                             <children>
                                 <Label styleClass="form-label" text="Blood Type" />
-                                <TextField fx:id="bloodTypeField" editable="false" focusTraversable="false" />
+                                <TextField fx:id="bloodTypeField" editable="false" focusTraversable="false" styleClass="text-field, read-only-field" />
                             </children>
                         </VBox>
                         <VBox fx:id="hospitalFields" managed="false" spacing="8.0" visible="false">

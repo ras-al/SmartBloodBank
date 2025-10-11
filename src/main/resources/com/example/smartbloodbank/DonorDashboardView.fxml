@@ -25,38 +25,34 @@
     </rowConstraints>
 
     <children>
-        <!-- Top Left: Lifetime Impact -->
         <VBox spacing="15.0" styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Text styleClass="info-card-title" text="Lifetime Impact" />
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                 <VBox>
-                    <Text styleClass="info-card-value" text="3" />
+                    <Text fx:id="donationsCountText" styleClass="info-card-value" text="0" />
                     <Text text="Donations" />
                 </VBox>
                 <VBox>
-                    <Text styleClass="info-card-value" text="9" />
+                    <Text fx:id="livesSavedText" styleClass="info-card-value" text="0" />
                     <Text text="Lives Saved" />
                 </VBox>
             </HBox>
         </VBox>
 
-        <!-- Top Right: Donation Eligibility -->
         <VBox spacing="10.0" styleClass="info-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <Text styleClass="info-card-title" text="Donation Eligibility" />
-            <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #27ae60;" text="You are eligible to donate!" />
-            <Text text="Next eligible date: October 21, 2025" />
+            <Text fx:id="eligibilityStatusText" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Calculating..." />
+            <Text fx:id="nextEligibleDateText" text="" />
         </VBox>
 
-        <!-- Bottom Left: My Achievements -->
         <VBox spacing="10.0" styleClass="info-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <Text styleClass="info-card-title" text="My Achievements" />
             <HBox alignment="CENTER" spacing="10.0">
-                <Text styleClass="info-card-value" text="Bronze Donor" />
+                <Text fx:id="achievementText" styleClass="info-card-value" text="No badges yet." />
             </HBox>
-            <Text text="Awarded for 3+ donations." />
+            <Text fx:id="achievementDescription" text="Donate to earn badges!" />
         </VBox>
 
-        <!-- Bottom Right: Donation History -->
         <VBox styleClass="info-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Text styleClass="info-card-title" text="Donation History" />
             <ListView fx:id="donationHistoryListView" styleClass="history-list-view" VBox.vgrow="ALWAYS" />
