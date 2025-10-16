@@ -14,11 +14,10 @@ import java.net.http.HttpResponse;
 public class GeminiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GeminiService.class);
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
 
-    // Securely reads the API key from an environment variable.
+    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
+
     private static final String API_KEY = System.getenv("GEMINI_API_KEY");
-
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -43,7 +42,6 @@ public class GeminiService {
                     bloodType, location
             );
 
-            // Construct the JSON payload for the REST API
             String jsonPayload = String.format("{\"contents\":[{\"parts\":[{\"text\":\"%s\"}]}]}", prompt);
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -55,7 +53,6 @@ public class GeminiService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                // Parse the JSON response to extract the text
                 JsonNode root = objectMapper.readTree(response.body());
                 JsonNode textNode = root.path("candidates").get(0).path("content").path("parts").get(0).path("text");
                 if (textNode.isMissingNode()) {
