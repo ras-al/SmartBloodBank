@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -69,8 +70,8 @@ public class NotificationsController {
         Long timestamp = doc.getLong("timestamp");
         String status = doc.getString("status");
 
-        if ("Fulfilled".equalsIgnoreCase(status)) {
-            card.setStyle("-fx-border-color: #27ae60; -fx-opacity: 0.6;");
+        if ("Fulfilled".equalsIgnoreCase(status) || "read".equalsIgnoreCase(status)) {
+            card.setStyle("-fx-border-color: #27ae60; -fx-opacity: 0.6;"); // Green border and faded
         }
 
         VBox messageContainer = new VBox(5);
@@ -80,6 +81,8 @@ public class NotificationsController {
         String subtitleText = message;
         if ("Fulfilled".equalsIgnoreCase(status)) {
             subtitleText = "[COMPLETED] " + message;
+        } else if ("read".equalsIgnoreCase(status)) {
+            subtitleText = "[Read] " + message;
         }
         Text subtitle = new Text(subtitleText);
         subtitle.getStyleClass().add("notification-subtitle");
@@ -94,6 +97,27 @@ public class NotificationsController {
 
         card.getChildren().addAll(messageContainer, spacer, time);
         return card;
+    }
+
+    @FXML
+    protected void handleMarkAllAsRead() {
+        if (currentUser == null) return;
+
+        // Run this database operation on a background thread
+        new Thread(() -> {
+            try {
+                List<QueryDocumentSnapshot> documents = db.collection("notifications")
+                        .whereEqualTo("donorId", currentUser.getUid())
+                        .whereEqualTo("status", "unread")
+                        .get().get().getDocuments();
+
+                for (QueryDocumentSnapshot doc : documents) {
+                    doc.getReference().update("status", "read");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private String formatTimestamp(Long timestamp) {

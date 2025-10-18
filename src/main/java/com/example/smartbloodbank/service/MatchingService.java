@@ -4,10 +4,12 @@ import com.example.smartbloodbank.model.BloodRequest;
 import com.example.smartbloodbank.model.Donor;
 import com.example.smartbloodbank.model.PartnerHospital;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,17 +20,30 @@ public class MatchingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchingService.class);
     private final Firestore db = FirestoreService.getDb();
 
+    // Blood Type Compatibility Chart
+    private static final Map<String, List<String>> COMPATIBILITY_MAP = new HashMap<>();
+    static {
+        COMPATIBILITY_MAP.put("A+", Arrays.asList("A+", "A-", "O+", "O-"));
+        COMPATIBILITY_MAP.put("A-", Arrays.asList("A-", "O-"));
+        COMPATIBILITY_MAP.put("B+", Arrays.asList("B+", "B-", "O+", "O-"));
+        COMPATIBILITY_MAP.put("B-", Arrays.asList("B-", "O-"));
+        COMPATIBILITY_MAP.put("AB+", Arrays.asList("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"));
+        COMPATIBILITY_MAP.put("AB-", Arrays.asList("AB-", "A-", "B-", "O-"));
+        COMPATIBILITY_MAP.put("O+", Arrays.asList("O+", "O-"));
+        COMPATIBILITY_MAP.put("O-", Arrays.asList("O-"));
+    }
+
     public void findBloodSource(BloodRequest request) {
         new Thread(() -> {
             try {
-                LOGGER.info("Phase 1: Checking partner hospital inventory for {} units of {}", request.getUnitsRequired(), request.getBloodType());
+                LOGGER.info("Phase 1: Checking partner hospital inventory for compatible types for {}", request.getBloodType());
                 int unitsFulfilled = checkAndReservePartnerInventory(request);
                 int unitsStillNeeded = request.getUnitsRequired() - unitsFulfilled;
 
                 if (unitsStillNeeded <= 0) {
                     String statusMessage = String.format("Completed: %d units sourced from partner hospitals.", unitsFulfilled);
                     updateRequestStatus(request.getRequestId(), statusMessage, unitsFulfilled);
-                    LOGGER.info("Request fully fulfilled by partner hospitals. Process stopped.");
+                    LOGGER.info("Request fully fulfilled by partner hospitals.");
                     return;
                 }
 
@@ -48,7 +63,9 @@ public class MatchingService {
     }
 
     private int checkAndReservePartnerInventory(BloodRequest request) throws ExecutionException, InterruptedException {
-        // ... (This method remains the same)
+        List<String> compatibleTypes = COMPATIBILITY_MAP.get(request.getBloodType());
+        if (compatibleTypes == null) return 0;
+
         List<QueryDocumentSnapshot> documents = db.collection("partnerHospitals").get().get().getDocuments();
         int unitsStillNeeded = request.getUnitsRequired();
         int totalUnitsReserved = 0;
@@ -59,22 +76,23 @@ public class MatchingService {
             PartnerHospital hospital = document.toObject(PartnerHospital.class);
             Map<String, Integer> bloodStock = hospital.getBloodStock();
 
-            if (bloodStock != null && bloodStock.containsKey(request.getBloodType())) {
-                int stockAvailable = bloodStock.get(request.getBloodType());
+            if (bloodStock != null) {
+                // --- INTELLIGENCE: Iterate through compatible blood types ---
+                for (String bloodType : compatibleTypes) {
+                    if (bloodStock.containsKey(bloodType) && bloodStock.get(bloodType) > 0) {
+                        int stockAvailable = bloodStock.get(bloodType);
+                        int unitsToReserve = Math.min(stockAvailable, unitsStillNeeded);
+                        int newStockLevel = stockAvailable - unitsToReserve;
 
-                if (stockAvailable > 0) {
-                    int unitsToReserve = Math.min(stockAvailable, unitsStillNeeded);
-                    int newStockLevel = stockAvailable - unitsToReserve;
+                        db.collection("partnerHospitals").document(document.getId())
+                                .update("bloodStock." + bloodType, newStockLevel);
 
-                    String documentId = document.getId();
-                    db.collection("partnerHospitals").document(documentId)
-                            .update("bloodStock." + request.getBloodType(), newStockLevel);
+                        LOGGER.info("Reserved {} units of compatible type {} from {}.", unitsToReserve, bloodType, hospital.getHospitalName());
+                        unitsStillNeeded -= unitsToReserve;
+                        totalUnitsReserved += unitsToReserve;
 
-                    LOGGER.info("Reserved {} units of {} from {}. New stock level: {}",
-                            unitsToReserve, request.getBloodType(), hospital.getHospitalName(), newStockLevel);
-
-                    unitsStillNeeded -= unitsToReserve;
-                    totalUnitsReserved += unitsToReserve;
+                        if (unitsStillNeeded <= 0) break;
+                    }
                 }
             }
         }
@@ -82,18 +100,22 @@ public class MatchingService {
     }
 
     private void searchForVoluntaryDonors(BloodRequest request, int unitsNeeded) throws ExecutionException, InterruptedException {
-        List<QueryDocumentSnapshot> documents = db.collection("users")
+        List<String> compatibleTypes = COMPATIBILITY_MAP.get(request.getBloodType());
+        if (compatibleTypes == null) return;
+
+        Query query = db.collection("users")
                 .whereEqualTo("role", "Donor")
-                .whereEqualTo("bloodType", request.getBloodType())
-                .get().get().getDocuments();
+                .whereIn("bloodType", compatibleTypes);
+
+        List<QueryDocumentSnapshot> documents = query.get().get().getDocuments();
 
         if (documents.isEmpty()) {
-            LOGGER.warn("No donors found for blood type {}. Triggering AI campaign suggestion.", request.getBloodType());
-            triggerCampaignSuggestion(request.getBloodType(), "Kollam"); // Assuming location
+            LOGGER.warn("No donors found for compatible blood types. Triggering AI campaign suggestion.");
+            triggerCampaignSuggestion(request.getBloodType(), "Kollam");
             return;
         }
 
-        LOGGER.info("Found {} potential donors for blood type {}.", documents.size(), request.getBloodType());
+        LOGGER.info("Found {} potential donors with compatible blood types.", documents.size());
         for (QueryDocumentSnapshot document : documents) {
             Donor donor = document.toObject(Donor.class);
             donor.setUid(document.getId());
@@ -116,7 +138,6 @@ public class MatchingService {
     private void triggerCampaignSuggestion(String bloodType, String location) {
         String suggestion = GeminiService.getCampaignSuggestion(bloodType, location);
 
-        // Save the suggestion for organizers to see
         Map<String, Object> suggestionData = new HashMap<>();
         suggestionData.put("bloodType", bloodType);
         suggestionData.put("location", location);
