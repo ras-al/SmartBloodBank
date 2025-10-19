@@ -11,7 +11,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +27,19 @@ public class FindDriveController {
     }
 
     private void loadCampaigns() {
+        String todayDateString = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+
         FirestoreService.getDb().collection("campaigns")
+                .whereGreaterThanOrEqualTo("campaignDate", todayDateString)
                 .orderBy("campaignDate", Query.Direction.ASCENDING)
                 .get()
                 .addListener(() -> {
                     try {
-                        List<QueryDocumentSnapshot> documents = FirestoreService.getDb().collection("campaigns").get().get().getDocuments();
+                        List<QueryDocumentSnapshot> documents = FirestoreService.getDb().collection("campaigns")
+                                .whereGreaterThanOrEqualTo("campaignDate", todayDateString)
+                                .orderBy("campaignDate", Query.Direction.ASCENDING)
+                                .get().get().getDocuments();
+
                         List<Node> campaignCards = new ArrayList<>();
                         for (QueryDocumentSnapshot document : documents) {
                             Campaign campaign = document.toObject(Campaign.class);
@@ -40,10 +48,22 @@ public class FindDriveController {
 
                         Platform.runLater(() -> {
                             driveFlowPane.getChildren().clear();
-                            driveFlowPane.getChildren().addAll(campaignCards);
+                            if (campaignCards.isEmpty()) {
+                                driveFlowPane.getChildren().add(new Text("No upcoming drives found."));
+                            } else {
+                                driveFlowPane.getChildren().addAll(campaignCards);
+                            }
                         });
                     } catch (Exception e) {
+                        System.err.println("Error fetching upcoming campaigns: " + e.getMessage());
                         e.printStackTrace();
+                        Platform.runLater(() -> {
+                            driveFlowPane.getChildren().clear();
+                            driveFlowPane.getChildren().add(new Text("Error loading drives."));
+                        });
+                        if (e instanceof InterruptedException) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
                 }, Platform::runLater);
     }
@@ -59,7 +79,17 @@ public class FindDriveController {
 
         HBox detailsBox = new HBox(40);
         VBox dateBox = new VBox(5);
-        dateBox.getChildren().addAll(new Text("DATE"), new Text(campaign.getCampaignDate()));
+        String formattedDate = "Unknown Date";
+        try {
+            LocalDate date = LocalDate.parse(campaign.getCampaignDate());
+            formattedDate = date.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
+        } catch (Exception e) {
+            System.err.println("Could not parse campaign date: " + campaign.getCampaignDate());
+            formattedDate = campaign.getCampaignDate();
+        }
+        dateBox.getChildren().addAll(new Text("DATE"), new Text(formattedDate));
+
+
         VBox goalBox = new VBox(5);
         Text goalValue = new Text(String.valueOf(campaign.getGoal()));
         goalValue.getStyleClass().add("card-detail-value");

@@ -1,5 +1,8 @@
 package com.example.smartbloodbank.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BloodRequest {
     private int requestId;
     private String bloodType;
@@ -7,19 +10,21 @@ public class BloodRequest {
     private int unitsFulfilled;
     private String status;
     private String postedDate;
+    private List<String> acceptedDonors;
 
     public BloodRequest() {
+        this.acceptedDonors = new ArrayList<>();
     }
 
     public BloodRequest(int requestId, String bloodType, int unitsRequired, String status, String postedDate) {
         this.requestId = requestId;
         this.bloodType = bloodType;
         this.unitsRequired = unitsRequired;
-        this.unitsFulfilled = 0; // Starts at zero
+        this.unitsFulfilled = 0;
         this.status = status;
         this.postedDate = postedDate;
+        this.acceptedDonors = new ArrayList<>();
     }
-
 
     public int getRequestId() {
         return requestId;
@@ -56,5 +61,12 @@ public class BloodRequest {
     }
     public void setPostedDate(String postedDate) {
         this.postedDate = postedDate;
+    }
+
+    public List<String> getAcceptedDonors() {
+        return acceptedDonors;
+    }
+    public void setAcceptedDonors(List<String> acceptedDonors) {
+        this.acceptedDonors = acceptedDonors;
     }
 }

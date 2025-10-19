@@ -45,13 +45,13 @@
                 </VBox>
                 <VBox alignment="CENTER" spacing="15.0" styleClass="feature-card">
                     <children>
-                        <Text text="AI Campaign Assistant">
+                        <Text text="AI Suggestions">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
                         </Text>
-                        <Text text="Get AI-powered suggestions for new campaigns based on local needs." textAlignment="CENTER" wrappingWidth="220.0" />
-                        <Button onAction="#handleAIAssistant" styleClass="primary-button" text="Get Suggestion" />
+                        <Text text="See proactive suggestions from the AI based on local supply needs." textAlignment="CENTER" wrappingWidth="220.0" />
+                        <Button onAction="#handleAIAssistant" styleClass="primary-button" text="View Suggestions" />
                     </children>
                 </VBox>
             </children>

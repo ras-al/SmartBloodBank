@@ -10,7 +10,10 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreateCampaignController {
 
@@ -22,6 +25,27 @@ public class CreateCampaignController {
 
     public void initData(String organizerId) {
         this.organizerId = organizerId;
+    }
+
+    public void initData(String organizerId, Map<String, Object> suggestionData) {
+        this.organizerId = organizerId;
+
+        String location = (String) suggestionData.get("location");
+        String suggestionText = (String) suggestionData.get("suggestionText");
+
+        if (location != null) {
+            locationField.setText(location);
+        }
+
+        if (suggestionText != null) {
+            Pattern titlePattern = Pattern.compile("Title: (.*)", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = titlePattern.matcher(suggestionText);
+            if (matcher.find()) {
+                campaignNameField.setText(matcher.group(1).trim());
+            } else {
+                campaignNameField.setText("Drive for " + suggestionData.get("bloodType") + " blood");
+            }
+        }
     }
 
     @FXML

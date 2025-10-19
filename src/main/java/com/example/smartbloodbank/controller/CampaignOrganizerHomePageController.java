@@ -54,41 +54,9 @@ public class CampaignOrganizerHomePageController {
 
     @FXML
     protected void handleAIAssistant() {
-        new Thread(() -> {
-            try {
-                // 1. Analyze blood requests to find the most needed blood type
-                List<QueryDocumentSnapshot> documents = db.collection("bloodRequests").get().get().getDocuments();
-                Map<String, Integer> bloodTypeCounts = new HashMap<>();
-                for (QueryDocumentSnapshot doc : documents) {
-                    BloodRequest request = doc.toObject(BloodRequest.class);
-                    bloodTypeCounts.merge(request.getBloodType(), 1, Integer::sum);
-                }
-
-                if (bloodTypeCounts.isEmpty()) {
-                    Platform.runLater(() -> showAlert("AI Assistant", "No recent request data to analyze."));
-                    return;
-                }
-
-                String mostNeededBloodType = Collections.max(bloodTypeCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
-
-                // 2. Call Gemini Service to get a campaign suggestion
-                String suggestion = GeminiService.getCampaignSuggestion(mostNeededBloodType, "Kollam");
-
-                // 3. Display the suggestion in an Alert
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("AI Campaign Suggestion");
-                    alert.setHeaderText("Analysis Complete: Low Supply of " + mostNeededBloodType + " Blood Detected!");
-                    alert.setContentText(suggestion);
-                    alert.getDialogPane().setPrefSize(480, 320); // Make dialog larger
-                    alert.showAndWait();
-                });
-
-            } catch (Exception e) {
-                Platform.runLater(() -> showAlert("Error", "Could not generate AI suggestion: " + e.getMessage()));
-                e.printStackTrace();
-            }
-        }).start();
+        if (dashboardController != null) {
+            dashboardController.handleAiSuggestionsButton();
+        }
     }
 
     private void showAlert(String title, String content) {

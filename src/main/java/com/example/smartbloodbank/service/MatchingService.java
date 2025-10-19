@@ -77,7 +77,7 @@ public class MatchingService {
             Map<String, Integer> bloodStock = hospital.getBloodStock();
 
             if (bloodStock != null) {
-                // --- INTELLIGENCE: Iterate through compatible blood types ---
+                // INTELLIGENCE: Iterate through compatible blood types
                 for (String bloodType : compatibleTypes) {
                     if (bloodStock.containsKey(bloodType) && bloodStock.get(bloodType) > 0) {
                         int stockAvailable = bloodStock.get(bloodType);
@@ -126,7 +126,7 @@ public class MatchingService {
     private void sendNotificationToDonor(Donor donor, BloodRequest request) {
         Map<String, Object> notification = new HashMap<>();
         notification.put("donorId", donor.getUid());
-        notification.put("requestId", request.getRequestId()); // Link notification to request
+        notification.put("requestIdString", String.valueOf(request.getRequestId()));
         notification.put("message", "Urgent need for your blood type (" + request.getBloodType() + ").");
         notification.put("timestamp", System.currentTimeMillis());
         notification.put("status", "unread");

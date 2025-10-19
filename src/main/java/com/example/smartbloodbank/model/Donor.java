@@ -1,23 +1,28 @@
 package com.example.smartbloodbank.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Donor extends User {
     private String bloodType;
-    private String lastDonationDate; // Should be String to match our other models
+    private String lastDonationDate;
     private String location;
+
+    private List<String> badges;
 
     public Donor() {
         super();
+        this.badges = new ArrayList<>();
     }
 
     public Donor(String userId, String username, String password, String email, String bloodType, String location) {
         super(userId, username, password, email, "Donor");
         this.bloodType = bloodType;
         this.location = location;
+        this.badges = new ArrayList<>();
     }
 
-    // --- Getters and Setters for donor-specific fields ---
     public String getBloodType() {
         return bloodType;
     }
@@ -35,6 +40,13 @@ public class Donor extends User {
     }
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<String> getBadges() {
+        return badges;
+    }
+    public void setBadges(List<String> badges) {
+        this.badges = badges;
     }
 
     @Override

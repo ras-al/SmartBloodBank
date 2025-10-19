@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -31,6 +33,8 @@ public class RegisterController {
     @FXML private VBox donorFields, hospitalFields, organizerFields;
     @FXML private ComboBox<String> bloodTypeComboBox;
     @FXML private TextField hospitalNameField, organizationNameField;
+    @FXML private DatePicker lastDonationDatePicker;
+    @FXML private TextField locationField;
 
     private final AuthService authService = new AuthService();
 
@@ -55,14 +59,17 @@ public class RegisterController {
     }
 
     private void updateForm(String role) {
-        donorFields.setVisible("Donor".equals(role));
-        donorFields.setManaged("Donor".equals(role));
+        boolean isDonor = "Donor".equals(role);
+        donorFields.setVisible(isDonor);
+        donorFields.setManaged(isDonor);
 
-        // --- THIS IS THE CORRECTED LOGIC ---
-        hospitalFields.setVisible("HospitalStaff".equals(role));
-        hospitalFields.setManaged("HospitalStaff".equals(role));
-        organizerFields.setVisible("CampaignOrganizer".equals(role));
-        organizerFields.setManaged("CampaignOrganizer".equals(role));
+        boolean isHospital = "HospitalStaff".equals(role);
+        hospitalFields.setVisible(isHospital);
+        hospitalFields.setManaged(isHospital);
+
+        boolean isOrganizer = "CampaignOrganizer".equals(role);
+        organizerFields.setVisible(isOrganizer);
+        organizerFields.setManaged(isOrganizer);
     }
 
     @FXML
@@ -77,10 +84,19 @@ public class RegisterController {
             userData.put("email", emailField.getText());
             userData.put("password", passwordField.getText());
             userData.put("role", roleChoiceBox.getValue());
+            userData.put("location", locationField.getText().trim());
 
             String role = roleChoiceBox.getValue();
             if ("Donor".equals(role)) {
                 userData.put("bloodType", bloodTypeComboBox.getValue());
+                LocalDate lastDonationDate = lastDonationDatePicker.getValue();
+                if (lastDonationDate != null) {
+                    userData.put("lastDonationDate", lastDonationDate.toString());
+                } else {
+                    userData.put("lastDonationDate", "");
+                }
+                userData.put("badges", new ArrayList<String>());
+
             } else if ("HospitalStaff".equals(role)) {
                 userData.put("hospitalName", hospitalNameField.getText());
             } else if ("CampaignOrganizer".equals(role)) {
@@ -95,8 +111,8 @@ public class RegisterController {
             LOGGER.error("Firebase Auth registration failed", e);
             statusLabel.setText("Error: " + e.getMessage());
         } catch (ExecutionException | InterruptedException e) {
-            statusLabel.setText("Error: Could not verify username. Please try again.");
-            LOGGER.error("Error checking for existing username", e);
+            statusLabel.setText("Error: Could not verify username or register. Please try again.");
+            LOGGER.error("Error during registration check/process", e);
             Thread.currentThread().interrupt();
         } catch (IOException e) {
             LOGGER.error("Failed to switch scene after registration", e);
@@ -109,26 +125,54 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         String role = roleChoiceBox.getValue();
+        String location = locationField.getText();
 
-        if (email.isBlank() || username.isBlank() || password.isBlank() || role == null) {
-            statusLabel.setText("Error: All fields, including role, are required.");
+        if (email.isBlank() || username.isBlank() || password.isBlank() || role == null || location.isBlank()) {
+            statusLabel.setText("Error: Email, Username, Password, Location, and Role are required.");
             return false;
         }
+
+        if ("Donor".equals(role) && bloodTypeComboBox.getValue() == null) {
+            statusLabel.setText("Error: Blood Type is required for Donors.");
+            return false;
+        }
+        if ("HospitalStaff".equals(role) && hospitalNameField.getText().isBlank()) {
+            statusLabel.setText("Error: Hospital Name is required for Hospital Staff.");
+            return false;
+        }
+        if ("CampaignOrganizer".equals(role) && organizationNameField.getText().isBlank()) {
+            statusLabel.setText("Error: Organization Name is required for Campaign Organizers.");
+            return false;
+        }
+
+        // Username existence check
         if (authService.usernameExists(username)) {
             statusLabel.setText("Error: This username is already taken.");
             return false;
         }
+        // Email format check
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             statusLabel.setText("Error: Please enter a valid email address.");
             return false;
         }
+        // Password complexity check
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             statusLabel.setText("Password must be 8+ characters with uppercase, number, and special character.");
             return false;
         }
+        // Password confirmation check
         if (!password.equals(confirmPassword)) {
             statusLabel.setText("Error: Passwords do not match.");
             return false;
+        }
+
+        // Date validation for donors
+        if ("Donor".equals(role)) {
+            LocalDate lastDonation = lastDonationDatePicker.getValue();
+            if (lastDonation != null && lastDonation.isAfter(LocalDate.now())) {
+                statusLabel.setText("Error: Last donation date cannot be in the future.");
+                return false;
+            }
         }
 
         statusLabel.setText("");

@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import java.io.IOException;
+import java.util.Map;
 
 public class DashboardController {
     @FXML
@@ -34,6 +35,10 @@ public class DashboardController {
     private Button createCampaignButton;
     @FXML
     private Button manageCampaignsButton;
+
+    // --- NEW BUTTON ---
+    @FXML
+    private Button aiSuggestionsButton;
 
     private User currentUser;
 
@@ -66,6 +71,9 @@ public class DashboardController {
         manageCampaignsButton.setVisible(isOrganizer);
         manageCampaignsButton.setManaged(isOrganizer);
 
+        aiSuggestionsButton.setVisible(isOrganizer);
+        aiSuggestionsButton.setManaged(isOrganizer);
+
         partnerHospitalButton.setVisible(isHospital);
         partnerHospitalButton.setManaged(isHospital);
 
@@ -74,7 +82,6 @@ public class DashboardController {
     }
 
     private void setupNotificationListener(User user) {
-        // Only set up listeners for Donors
         if (!"Donor".equals(user.getRole())) {
             return;
         }
@@ -96,11 +103,9 @@ public class DashboardController {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Urgent Blood Request!");
                                 alert.setHeaderText("You are a potential match!");
-                                alert.setContentText(message);
+                                alert.setContentText(message + "\nPlease check your notifications panel to respond.");
                                 alert.showAndWait();
                             });
-                            // Mark the notification as read to prevent it from showing again
-                            doc.getReference().update("status", "read");
                         }
                     }
                 });
@@ -148,6 +153,11 @@ public class DashboardController {
     }
 
     @FXML
+    protected void handleAiSuggestionsButton() {
+        loadView("/com/example/smartbloodbank/AiSuggestionsView.fxml");
+    }
+
+    @FXML
     protected void handleCreateCampaignButton() {
         loadView("/com/example/smartbloodbank/CreateCampaignView.fxml");
     }
@@ -157,47 +167,67 @@ public class DashboardController {
         loadView("/com/example/smartbloodbank/ManageCampaignsView.fxml");
     }
 
-    // Public access for HomePageController to call it
-    public void loadView(String fxmlFile) {
+    public void loadView(String fxmlFile, Object data) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent subView = loader.load();
 
-            // Pass data to the correct sub-controllers that need it
-            if (fxmlFile.contains("DonorDashboardView")) {
-                DonorDashboardController controller = loader.getController();
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("HospitalHomePageView")) {
-                HospitalHomePageController controller = loader.getController();
-                controller.setDashboardController(this);
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("CampaignOrganizerHomePageView")) {
-                CampaignOrganizerHomePageController controller = loader.getController();
-                controller.setDashboardController(this);
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("HomePageView")) {
-                HomePageController controller = loader.getController();
-                controller.setDashboardController(this);
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("ProfileView")) {
-                ProfileController controller = loader.getController();
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("CreateCampaignView")) {
+            if (fxmlFile.contains("CreateCampaignView") && data instanceof Map) {
                 CreateCampaignController controller = loader.getController();
-                controller.initData(currentUser.getUid());
-            } else if (fxmlFile.contains("ManageCampaignsView")) {
-                ManageCampaignsController controller = loader.getController();
-                controller.initData(currentUser.getUid());
-            } else if (fxmlFile.contains("NotificationsView")) {
-                NotificationsController controller = loader.getController();
-                controller.initData(currentUser);
-            } else if (fxmlFile.contains("FindDriveView")) {
-                // No specific data needs to be passed to FindDriveController
+                controller.initData(currentUser.getUid(), (Map<String, Object>) data);
+            } else {
+                loadViewInternal(loader, fxmlFile, subView);
             }
 
             mainPane.setCenter(subView);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void loadView(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent subView = loader.load();
+            loadViewInternal(loader, fxmlFile, subView);
+            mainPane.setCenter(subView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadViewInternal(FXMLLoader loader, String fxmlFile, Parent subView) {
+        if (fxmlFile.contains("DonorDashboardView")) {
+            DonorDashboardController controller = loader.getController();
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("HospitalHomePageView")) {
+            HospitalHomePageController controller = loader.getController();
+            controller.setDashboardController(this);
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("CampaignOrganizerHomePageView")) {
+            CampaignOrganizerHomePageController controller = loader.getController();
+            controller.setDashboardController(this);
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("HomePageView")) {
+            HomePageController controller = loader.getController();
+            controller.setDashboardController(this);
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("ProfileView")) {
+            ProfileController controller = loader.getController();
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("CreateCampaignView")) {
+            CreateCampaignController controller = loader.getController();
+            controller.initData(currentUser.getUid()); // Standard init
+        } else if (fxmlFile.contains("ManageCampaignsView")) {
+            ManageCampaignsController controller = loader.getController();
+            controller.initData(currentUser.getUid());
+        } else if (fxmlFile.contains("NotificationsView")) {
+            NotificationsController controller = loader.getController();
+            controller.initData(currentUser);
+        } else if (fxmlFile.contains("AiSuggestionsView")) {
+            AiSuggestionsController controller = loader.getController();
+            controller.setDashboardController(this);
+        } else if (fxmlFile.contains("FindDriveView")) {
         }
     }
 
