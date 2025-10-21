@@ -4,12 +4,11 @@ public class Campaign {
     private String campaignId;
     private String campaignName;
     private String location;
-    private String campaignDate; // Changed from LocalDate to String
-    private int goal; // e.g., target number of units
+    private String campaignDate;
+    private int goal;
     private String status;
     private String organizerId;
 
-    // No-argument constructor is required for Firestore deserialization
     public Campaign() {
     }
 
@@ -17,9 +16,9 @@ public class Campaign {
         this.campaignId = campaignId;
         this.campaignName = campaignName;
         this.location = location;
-        this.campaignDate = campaignDate; // Now accepts a String
+        this.campaignDate = campaignDate;
         this.goal = goal;
-        this.status = "Planned"; // Default status
+        this.status = "Planned";
     }
 
     // --- Getters and Setters ---

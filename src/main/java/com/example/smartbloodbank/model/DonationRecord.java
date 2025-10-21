@@ -5,15 +5,15 @@ import java.time.format.DateTimeFormatter;
 
 public class DonationRecord {
     private String recordId;
-    private String donationDate; // Changed to String
+    private String donationDate;
     private String location;
     private int unitsDonated;
     private String bloodType;
 
-    // No-argument constructor for Firestore
-    public DonationRecord() {}
+    public DonationRecord() {
+        
+    }
 
-    // Constructor updated to accept a String for the date
     public DonationRecord(String recordId, String donationDate, String location, int unitsDonated, String bloodType) {
         this.recordId = recordId;
         this.donationDate = donationDate;

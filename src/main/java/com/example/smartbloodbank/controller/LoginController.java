@@ -25,7 +25,7 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    @FXML private TextField identifierField; // Changed from emailField
+    @FXML private TextField identifierField;
     @FXML private PasswordField passwordField;
     @FXML private Label statusLabel;
     @FXML private VBox formContainer;

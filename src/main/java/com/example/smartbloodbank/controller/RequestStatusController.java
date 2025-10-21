@@ -156,13 +156,10 @@ public class RequestStatusController {
         try {
             LocalDate lastDonationDate = LocalDate.parse(lastDonationDateStr);
             LocalDate nextEligibleDate = lastDonationDate.plusMonths(ELIGIBILITY_PERIOD_MONTHS);
-            // --- CORRECTED LOGIC ---
-            // Eligible if today is ON or AFTER the next eligible date
             return !LocalDate.now().isBefore(nextEligibleDate);
-            // --- END CORRECTION ---
         } catch (Exception e) {
             System.err.println("Error parsing date for donor " + donor.getUsername() + ": " + e.getMessage());
-            return false; // Err on the side of caution
+            return false;
         }
     }
 
@@ -181,7 +178,7 @@ public class RequestStatusController {
                     .collect(Collectors.toList());
 
             List<Donor> eligibleDonors = potentialDonors.stream()
-                    .filter(this::isDonorEligible) // Use the corrected eligibility check
+                    .filter(this::isDonorEligible)
                     .collect(Collectors.toList());
 
             if (eligibleDonors.isEmpty()) {
