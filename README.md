@@ -10,7 +10,9 @@ This project was developed as our final year project at T.K.M College of Enginee
 * <a href="https://www.linkedin.com/in/shan-m-a-ab763a330/">**Shan M A** (TKM24CS122)</a>
 * <a href="https://www.linkedin.com/in/safdil-arafath-277bba377/">**Safdil Arafath** (TKM24CS111)</a>
 * <a href="https://www.linkedin.com/in/">**Ayman Riyaz** (TKM24CS048)</a>
-
+<br>
+Under the valuable guidance of <strong>Dr. Jini Raju</strong>, Assistant Professor, Department of Computer Science & Engineering, TKMCE.
+<br>
 ---
 
 ## 🎯 The Problem
