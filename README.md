@@ -1,3 +1,5 @@
+<<img width="1297" height="481" alt="logo" src="https://github.com/user-attachments/assets/21601e47-d5f4-4174-ba29-19f128a7fce5" />
+
 # DonorLink: AI-Enabled Smart Blood Bank
 
 **DonorLink** is a JavaFX desktop application designed to solve critical inefficiencies in blood donation management. It connects hospitals, donors, and campaign organizers on a single, real-time platform powered by Google Firebase and the Gemini AI.
